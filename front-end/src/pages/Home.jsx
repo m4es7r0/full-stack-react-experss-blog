@@ -7,7 +7,11 @@ import { Post } from '../components/Post';
 import { TagsBlock } from '../components/TagsBlock';
 import { CommentsBlock } from '../components/CommentsBlock';
 
+import { useGetPostsQuery } from '../redux/api/api';
+
 export const Home = () => {
+  const {data, error, isLoading, isError} = useGetPostsQuery()
+
   return (
     <>
       <Tabs style={{ marginBottom: 15 }} value={0} aria-label="basic tabs example">
