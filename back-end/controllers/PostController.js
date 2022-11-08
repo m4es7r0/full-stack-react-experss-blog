@@ -31,7 +31,6 @@ export const getAll = async (req, res) => {
       const { _doc: userDoc } = user
       const {
         passwordHash,
-        avatarUrl,
         createdAt,
         updatedAt,
         __v,
