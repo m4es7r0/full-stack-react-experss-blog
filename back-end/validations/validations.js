@@ -11,7 +11,7 @@ export const registerValidation = [
   body('email', 'invalid email').isEmail(),
   body('password', 'invalid password').isLength({ min: 5 }),
   body('fullName', 'please enter an existing name').isLength({ min: 3 }),
-  body('avatarUrl', 'invalid url of image').optional().isURL(),
+  body('avatarUrl', 'invalid url of image').optional().isString(),
 ]
 
 // POST
