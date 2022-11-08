@@ -1,6 +1,7 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import multer from 'multer'
+import corse from 'cors'
 
 import {
   registerValidation,
@@ -29,6 +30,7 @@ mongoose
 const app = express()
 
 app.use(express.json())
+app.use(corse())
 app.use('/uploads', express.static('uploads'))
 
 const storage = multer.diskStorage({
