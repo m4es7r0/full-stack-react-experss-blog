@@ -1,4 +1,6 @@
 import React from "react";
+import { useGetTagsQuery } from "../redux/api/api";
+import { Link } from "react-router-dom";
 
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -10,16 +12,24 @@ import Skeleton from "@mui/material/Skeleton";
 
 import { SideBlock } from "./SideBlock";
 
-export const TagsBlock = ({ items, isLoading = true }) => {
+export const TagsBlock = () => {
+  const { data: items, error, isLoading, isError } = useGetTagsQuery();
+
   return (
     <SideBlock title="Тэги">
+      {isError && !items && (
+        <ListItem>
+          <ListItemText primary={error.error} />
+        </ListItem>
+      )}
       <List>
-        {(isLoading ? [...Array(5)] : items).map((name, i) => (
-          <a
+        {(isLoading ? [...Array(5)] : items)?.map((name, i) => (
+          <Link
             style={{ textDecoration: "none", color: "black" }}
-            href={`/tags/${name}`}
+            to={`/tags/${name}`}
+            key={i}
           >
-            <ListItem key={i} disablePadding>
+            <ListItem disablePadding>
               <ListItemButton>
                 <ListItemIcon>
                   <TagIcon />
@@ -31,7 +41,7 @@ export const TagsBlock = ({ items, isLoading = true }) => {
                 )}
               </ListItemButton>
             </ListItem>
-          </a>
+          </Link>
         ))}
       </List>
     </SideBlock>

@@ -7,7 +7,7 @@ import { Post } from "../components/Post";
 import { TagsBlock } from "../components/TagsBlock";
 import { CommentsBlock } from "../components/CommentsBlock";
 
-import { useGetPostsQuery, useGetTagsQuery } from "../redux/api/api";
+import { useGetPostsQuery } from "../redux/api/api";
 
 export const Home = () => {
   const {
@@ -15,14 +15,7 @@ export const Home = () => {
     error: postsError,
     isLoading: isLoadingPosts,
     isError: isErrorPosts,
-  } = useGetPostsQuery();
-
-  const {
-    data: tags,
-    error: tagsError,
-    isLoading: isLoadingTags,
-    isError: isErrorTags,
-  } = useGetTagsQuery();
+  } = useGetPostsQuery(undefined, { refetchOnMountOrArgChange: true });
 
   return (
     <>
@@ -36,6 +29,7 @@ export const Home = () => {
       </Tabs>
       <Grid container spacing={4}>
         <Grid xs={8} item>
+          {isErrorPosts && !posts && <h2>{postsError.error}</h2>}
           {isLoadingPosts
             ? [...Array(3)].map((_, index) => (
                 <Post key={index} isLoading={true} />
@@ -54,18 +48,9 @@ export const Home = () => {
                   isEditable
                 />
               ))}
-          {isErrorPosts && <h2>{postsError.error}</h2>}
         </Grid>
         <Grid xs={4} item>
-          {isLoadingTags ? (
-            <TagsBlock isLoading={true} />
-          ) : (
-            <TagsBlock
-              items={tags}
-              isLoading={isLoadingTags}
-            />
-          )}
-          {isErrorTags && <h2>{tagsError.error}</h2>}
+          <TagsBlock />
           <CommentsBlock
             items={[
               {
