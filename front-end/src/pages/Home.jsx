@@ -8,8 +8,11 @@ import { TagsBlock } from "../components/TagsBlock";
 import { CommentsBlock } from "../components/CommentsBlock";
 
 import { useGetPostsQuery } from "../redux/api/api";
+import { useSelector } from "react-redux";
 
 export const Home = () => {
+  const userData = useSelector(({ auth }) => auth.user);
+
   const {
     data: posts,
     error: postsError,
@@ -45,7 +48,7 @@ export const Home = () => {
                   viewsCount={p.viewsCount}
                   commentsCount={0}
                   tags={p.tags}
-                  isEditable
+                  isEditable={userData?._id === p.user._id}
                 />
               ))}
         </Grid>
