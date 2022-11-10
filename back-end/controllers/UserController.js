@@ -35,7 +35,6 @@ export const register = async (req, res) => {
       token,
     })
   } catch (error) {
-    console.error(error)
     res.status(500).json({
       message: 'such a user already exists',
     })
@@ -84,7 +83,6 @@ export const login = async (req, res) => {
       token,
     })
   } catch (error) {
-    console.error(error)
     res.status(500).json({
       message: 'failed to login',
     })
@@ -105,7 +103,6 @@ export const getMe = async (req, res) => {
 
     res.json(userData)
   } catch (error) {
-    console.error(error)
     res.status(500).json({
       message: error.message,
     })
