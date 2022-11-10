@@ -60,6 +60,13 @@ export const getOne = async (req, res) => {
         returnDocument: "after",
       },
       (err, doc) => {
+        doc.user = {
+          _id: doc.user._id,
+          fullName: doc.user.fullName,
+          avatarUrl: doc.user.avatarUrl,
+          email: doc.user.email,
+        };
+
         if (err) {
           console.error(err);
           return res.status(500).json({
@@ -73,7 +80,7 @@ export const getOne = async (req, res) => {
         }
         res.json(doc);
       }
-    );
+    ).populate("user");
   } catch (e) {
     console.error(e);
     res.status(500).json({
