@@ -5,7 +5,7 @@ const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:4000",
     prepareHeaders: (headers) => {
-      const token = window.localStorage.getItem('token')
+      const token = window.localStorage.getItem("token");
       if (token) {
         headers.set("Authorization", token);
       }
@@ -39,8 +39,15 @@ const api = createApi({
       }),
     }),
     authMe: build.query({
-      query: () => 'auth/me'
-    })
+      query: () => "auth/me",
+    }),
+    register: build.mutation({
+      query: (body) => ({
+        url: "auth/register",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -49,7 +56,8 @@ export const {
   useGetPostByIdQuery,
   useGetTagsQuery,
   useLoginUserMutation,
-  useLazyAuthMeQuery
+  useLazyAuthMeQuery,
+  useRegisterMutation
 } = api;
 
 export default api;
