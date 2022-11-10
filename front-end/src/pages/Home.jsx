@@ -1,60 +1,86 @@
-import React from 'react';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Grid from '@mui/material/Grid';
+import React from "react";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Grid from "@mui/material/Grid";
 
-import { Post } from '../components/Post';
-import { TagsBlock } from '../components/TagsBlock';
-import { CommentsBlock } from '../components/CommentsBlock';
+import { Post } from "../components/Post";
+import { TagsBlock } from "../components/TagsBlock";
+import { CommentsBlock } from "../components/CommentsBlock";
 
-import { useGetPostsQuery } from '../redux/api/api';
+import { useGetPostsQuery, useGetTagsQuery } from "../redux/api/api";
 
 export const Home = () => {
-  const {data, error, isLoading, isError} = useGetPostsQuery()
+  const {
+    data: posts,
+    error: postsError,
+    isLoading: isLoadingPosts,
+    isError: isErrorPosts,
+  } = useGetPostsQuery();
+
+  const {
+    data: tags,
+    error: tagsError,
+    isLoading: isLoadingTags,
+    isError: isErrorTags,
+  } = useGetTagsQuery();
 
   return (
     <>
-      <Tabs style={{ marginBottom: 15 }} value={0} aria-label="basic tabs example">
+      <Tabs
+        style={{ marginBottom: 15 }}
+        value={0}
+        aria-label="basic tabs example"
+      >
         <Tab label="Новые" />
         <Tab label="Популярные" />
       </Tabs>
       <Grid container spacing={4}>
         <Grid xs={8} item>
-          {[...Array(5)].map(() => (
-            <Post
-              id={1}
-              title="Roast the code #1 | Rock Paper Scissors"
-              imageUrl="https://res.cloudinary.com/practicaldev/image/fetch/s--UnAfrEG8--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/icohm5g0axh9wjmu4oc3.png"
-              user={{
-                avatarUrl:
-                  'https://res.cloudinary.com/practicaldev/image/fetch/s--uigxYVRB--/c_fill,f_auto,fl_progressive,h_50,q_auto,w_50/https://dev-to-uploads.s3.amazonaws.com/uploads/user/profile_image/187971/a5359a24-b652-46be-8898-2c5df32aa6e0.png',
-                fullName: 'Keff',
-              }}
-              createdAt={'12 июня 2022 г.'}
-              viewsCount={150}
-              commentsCount={3}
-              tags={['react', 'fun', 'typescript']}
-              isEditable
-            />
-          ))}
+          {isLoadingPosts
+            ? [...Array(3)].map((_, index) => (
+                <Post key={index} isLoading={true} />
+              ))
+            : posts?.map((p) => (
+                <Post
+                  key={p._id}
+                  id={p._id}
+                  title={p.title}
+                  imageUrl={p.imageUrl}
+                  user={p.user}
+                  createdAt={new Date(p.createdAt).toDateString()}
+                  viewsCount={p.viewsCount}
+                  commentsCount={0}
+                  tags={p.tags}
+                  isEditable
+                />
+              ))}
+          {isErrorPosts && <h2>{postsError.error}</h2>}
         </Grid>
         <Grid xs={4} item>
-          <TagsBlock items={['react', 'typescript', 'заметки']} isLoading={false} />
+          {isLoadingTags ? (
+            <TagsBlock isLoading={true} />
+          ) : (
+            <TagsBlock
+              items={tags}
+              isLoading={isLoadingTags}
+            />
+          )}
+          {isErrorTags && <h2>{tagsError.error}</h2>}
           <CommentsBlock
             items={[
               {
                 user: {
-                  fullName: 'Вася Пупкин',
-                  avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
+                  fullName: "Вася Пупкин",
+                  avatarUrl: "https://mui.com/static/images/avatar/1.jpg",
                 },
-                text: 'Это тестовый комментарий',
+                text: "Это тестовый комментарий",
               },
               {
                 user: {
-                  fullName: 'Иван Иванов',
-                  avatarUrl: 'https://mui.com/static/images/avatar/2.jpg',
+                  fullName: "Иван Иванов",
+                  avatarUrl: "https://mui.com/static/images/avatar/2.jpg",
                 },
-                text: 'When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top',
+                text: "When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top",
               },
             ]}
             isLoading={false}

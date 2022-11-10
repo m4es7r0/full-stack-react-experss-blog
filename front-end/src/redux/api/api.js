@@ -9,9 +9,14 @@ const api = createApi({
         url: "posts",
       }),
     }),
+    getTags: build.query({
+      query: () => ({
+        url: "tags"
+      })
+    })
   }),
 });
 
-export const { useGetPostsQuery } = api;
+export const { useGetPostsQuery, useGetTagsQuery } = api;
 
 export default api;
