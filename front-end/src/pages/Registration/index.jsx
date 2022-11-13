@@ -1,7 +1,11 @@
 import React from "react";
 
 import { useNavigate } from "react-router-dom";
-import { useLazyAuthMeQuery, useRegisterMutation } from "../../redux/api/api";
+import {
+  useLazyAuthMeQuery,
+  useRegisterMutation,
+  useUploadFileMutation,
+} from "../../redux/api/api";
 import { useForm } from "react-hook-form";
 
 import Typography from "@mui/material/Typography";
@@ -14,7 +18,11 @@ import styles from "./Login.module.scss";
 
 export const Registration = () => {
   const [reg, { error, isLoading }] = useRegisterMutation();
+  const [uploadFile, { data }] = useUploadFileMutation();
   const [isAuth] = useLazyAuthMeQuery();
+
+  const inputImageRef = React.useRef(null);
+
   const navigate = useNavigate();
 
   const msgFromServ = (arr, param) => {
@@ -31,20 +39,31 @@ export const Registration = () => {
       fullName: "",
       email: "",
       password: "",
-      avatarUrl: "http://localhost:4000/uploads/zero2.jpg",
+      avatarUrl: "",
     },
     mode: "all",
   });
 
   const onSubmit = (values) => {
-    reg(values)
+    const reqData = {
+      ...values,
+      avatarUrl: data ? "http://localhost:4000" + data?.url : "",
+    };
+    reg(reqData)
       .then(({ data }) => {
         if ("token" in data) {
           window.localStorage.setItem("token", data.token);
         }
       })
       .then(() => isAuth())
-      .then(() => navigate('/'));
+      .then(() => navigate("/"));
+  };
+
+  const handleChangeFile = (e) => {
+    const formData = new FormData();
+    const file = e.target.files[0];
+    formData.append("image", file);
+    uploadFile(formData).unwrap();
   };
 
   if (isLoading)
@@ -62,8 +81,18 @@ export const Registration = () => {
         Создание аккаунта
       </Typography>
       <div className={styles.avatar}>
-        <Avatar sx={{ width: 100, height: 100 }} />
+        <Avatar
+          sx={{ width: 100, height: 100 }}
+          src={data ? `http://localhost:4000${data.url}` : ""}
+          onClick={() => inputImageRef.current.click()}
+        />
       </div>
+      <input
+        ref={inputImageRef}
+        type="file"
+        onChange={handleChangeFile}
+        hidden
+      />
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextField
           className={styles.field}
@@ -104,7 +133,13 @@ export const Registration = () => {
           }
           fullWidth
         />
-        <Button type="submit" disabled={!isValid} size="large" variant="contained" fullWidth>
+        <Button
+          type="submit"
+          disabled={!isValid}
+          size="large"
+          variant="contained"
+          fullWidth
+        >
           Зарегистрироваться
         </Button>
       </form>
