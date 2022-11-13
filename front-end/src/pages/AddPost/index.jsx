@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import {
   useUploadFileMutation,
   useMakePostMutation,
-  useRemoveFileMutation
+  useRemoveFileMutation,
 } from "../../redux/api/api";
 
 import TextField from "@mui/material/TextField";
@@ -19,19 +19,23 @@ import styles from "./AddPost.module.scss";
 
 export const AddPost = () => {
   useAuthRedirect();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [uploadFile] = useUploadFileMutation();
   const [removeFile] = useRemoveFileMutation();
-  const [makePost] = useMakePostMutation();
+  const [makePost, { isSuccess, isLoading }] = useMakePostMutation();
 
   const inputImageRef = React.useRef(null);
   const [fields, setFields] = React.useState({
     image: "",
+    imageByUrl: "",
     value: "",
     title: "",
     tags: "",
   });
+
+  // if (fields.image) setFields(prev => ({...prev, imageByUrl: ""}))
+  // if (fields.imageByUrl) setFields(prev => ({...prev, image: ""}))
 
   const handleChangeFile = (e) => {
     const formData = new FormData();
@@ -39,11 +43,11 @@ export const AddPost = () => {
     formData.append("image", file);
     uploadFile(formData)
       .unwrap()
-      .then((data) => setFields((prev) => ({ ...prev, image: data })));
+      .then((data) => setFields((prev) => ({ ...prev, image: data.url })));
   };
 
   const onClickRemoveImage = () => {
-    removeFile({name: `${fields.image.url}`})
+    removeFile({ name: `${fields.image}` });
     setFields((prev) => ({ ...prev, image: "" }));
   };
 
@@ -52,13 +56,15 @@ export const AddPost = () => {
   }, []);
 
   const onSubmit = () => {
-    makePost({
-      title: fields.title,
-      text: fields.value,
-      tags : !fields.tags ? [] : fields.tags.trim().split(', '),
-      imageUrl: `http://localhost:4000${fields.image.url}`
-    })
-    navigate('/')
+    if (isSuccess || !isLoading)
+      makePost({
+        title: fields.title,
+        text: fields.value,
+        tags: !fields.tags ? [] : fields.tags.trim().split(", "),
+        imageUrl: fields.image ? `http://localhost:4000${fields.image}` : fields.imageByUrl,
+      })
+        .unwrap()
+        .then((data) => navigate(`/posts/${data._id}`));
   };
 
   const options = React.useMemo(
@@ -81,7 +87,10 @@ export const AddPost = () => {
       <div className={styles.head}>
         <div>
           <Button
-            onClick={() => inputImageRef.current.click()}
+            onClick={() => {
+              inputImageRef.current.click()
+              setFields(prev => ({...prev, imageByUrl: ""}))
+            }}
             variant="outlined"
             size="large"
           >
@@ -92,6 +101,14 @@ export const AddPost = () => {
             type="file"
             onChange={handleChangeFile}
             hidden
+          />
+          <TextField
+            placeholder="или url картинки"
+            value={fields.imageByUrl}
+            onChange={(e) => {
+              setFields((prev) => ({ ...prev, imageByUrl: e.target.value }))
+              if (fields.image) onClickRemoveImage()
+            } }
           />
           {fields.image && (
             <Button
@@ -104,11 +121,11 @@ export const AddPost = () => {
             </Button>
           )}
         </div>
-        {fields.image && (
+        {(fields.image || fields.imageByUrl) && (
           <img
             className={styles.image}
-            src={`http://localhost:4000${fields.image.url}`}
-            alt="Uploaded"
+            src={fields.image ? `http://localhost:4000${fields.image}` : fields.imageByUrl}
+            alt="wrong url"
           />
         )}
       </div>

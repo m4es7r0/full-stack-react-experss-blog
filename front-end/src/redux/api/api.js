@@ -31,6 +31,13 @@ const api = createApi({
         body,
       }),
     }),
+    removePost: build.mutation({
+      query: (id) => ({
+        url: `posts/${id}`,
+        method: "DELETE"
+      }),
+      invalidatesTags: ['Posts']
+    }),
     getTags: build.query({
       query: () => ({
         url: "tags",
@@ -79,7 +86,8 @@ export const {
   useRegisterMutation,
   useUploadFileMutation,
   useMakePostMutation,
-  useRemoveFileMutation
+  useRemoveFileMutation,
+  useRemovePostMutation
 } = api;
 
 export default api;

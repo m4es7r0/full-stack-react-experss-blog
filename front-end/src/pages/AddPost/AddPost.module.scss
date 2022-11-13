@@ -55,5 +55,15 @@
   div {
     display: flex;
     gap: 10px;
+
+    input {
+      text-align: center;
+      width: 158.35px;
+      padding: 10px 10px;
+    }
+
+    fieldset {
+      max-width: 178.35px;
+    }
   }
 }
