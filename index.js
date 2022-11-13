@@ -18,7 +18,7 @@ import * as UserController from "./controllers/UserController.js";
 import * as PostController from "./controllers/PostController.js";
 
 mongoose
-  .connect(process.env.MONGODB_URL)
+  .connect(process.env.MONGODB)
   .then(() => {
     console.log("DB OK");
   })
