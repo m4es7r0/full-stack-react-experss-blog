@@ -17,6 +17,8 @@ import checkAuth from "./utils/checkAuth.js";
 import * as UserController from "./controllers/UserController.js";
 import * as PostController from "./controllers/PostController.js";
 
+const port = process.env.PORT || 8000;
+
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => {
@@ -92,7 +94,7 @@ app.patch(
 );
 app.delete("/posts/:postId", checkAuth, PostController.remove);
 
-app.listen(process.env.PORT || 4000, (err) => {
+app.listen(port, (err) => {
   if (err) return console.error(err);
   console.log("Server OK");
 });
