@@ -61,7 +61,7 @@ export const AddPost = () => {
         title: fields.title,
         text: fields.value,
         tags: !fields.tags ? [] : fields.tags.trim().split(", "),
-        imageUrl: fields.image ? `http://localhost:4000${fields.image}` : fields.imageByUrl,
+        imageUrl: fields.image ? `${process.env.REACT_APP_API_URL}${fields.image}` : fields.imageByUrl,
       })
         .unwrap()
         .then((data) => navigate(`/posts/${data._id}`));
@@ -124,7 +124,7 @@ export const AddPost = () => {
         {(fields.image || fields.imageByUrl) && (
           <img
             className={styles.image}
-            src={fields.image ? `http://localhost:4000${fields.image}` : fields.imageByUrl}
+            src={fields.image ? `${process.env.REACT_APP_API_URL}${fields.image}` : fields.imageByUrl}
             alt="wrong url"
           />
         )}
