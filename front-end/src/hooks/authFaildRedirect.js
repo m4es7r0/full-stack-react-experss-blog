@@ -5,5 +5,5 @@ import { selectIsAuth } from "../redux/slices/auth";
 export const useAuthRedirect = () => {
   const navigate = useNavigate();
   const isAuth = useSelector(selectIsAuth);
-  if (!isAuth) navigate("/", { replace: true });
+  if (!window.localStorage.getItem('token') && !isAuth) navigate("/", { replace: true });
 };

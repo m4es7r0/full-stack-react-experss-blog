@@ -6,9 +6,7 @@ const api = createApi({
     baseUrl: "http://localhost:4000",
     prepareHeaders: (headers) => {
       const token = window.localStorage.getItem("token");
-      if (token) {
-        headers.set("Authorization", token);
-      }
+      if (token) headers.set("Authorization", token);
       return headers;
     },
   }),
@@ -25,6 +23,13 @@ const api = createApi({
         url: `posts/${id}`,
       }),
       providesTags: ["Posts"],
+    }),
+    makePost: build.mutation({
+      query: (body) => ({
+        url: "posts",
+        method: "POST",
+        body,
+      }),
     }),
     getTags: build.query({
       query: () => ({
@@ -48,6 +53,13 @@ const api = createApi({
         body,
       }),
     }),
+    uploadFile: build.mutation({
+      query: (body) => ({
+        url: "upload",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -57,7 +69,9 @@ export const {
   useGetTagsQuery,
   useLoginUserMutation,
   useLazyAuthMeQuery,
-  useRegisterMutation
+  useRegisterMutation,
+  useUploadFileMutation,
+  useMakePostMutation,
 } = api;
 
 export default api;

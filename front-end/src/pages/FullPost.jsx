@@ -31,7 +31,7 @@ export const FullPost = () => {
               createdAt={new Date(data.createdAt).toDateString()}
               viewsCount={data.viewsCount}
               commentsCount={0}
-              tags={tags}
+              tags={data.tags}
               isFullPost
             >
               {data.text}
