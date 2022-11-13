@@ -1,15 +1,20 @@
-import React from 'react';
-import TextField from '@mui/material/TextField';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import SimpleMDE from 'react-simplemde-editor';
+import React from "react";
 
-import 'easymde/dist/easymde.min.css';
-import styles from './AddPost.module.scss';
+import { useAuthRedirect } from "../../hooks/authFaildRedirect";
+
+import TextField from "@mui/material/TextField";
+import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
+import SimpleMDE from "react-simplemde-editor";
+
+import "easymde/dist/easymde.min.css";
+import styles from "./AddPost.module.scss";
 
 export const AddPost = () => {
-  const imageUrl = '';
-  const [value, setValue] = React.useState('');
+  useAuthRedirect()
+
+  const imageUrl = "";
+  const [value, setValue] = React.useState("");
 
   const handleChangeFile = () => {};
 
@@ -22,16 +27,16 @@ export const AddPost = () => {
   const options = React.useMemo(
     () => ({
       spellChecker: false,
-      maxHeight: '400px',
+      maxHeight: "auto",
       autofocus: true,
-      placeholder: 'Введите текст...',
+      placeholder: "Введите текст...",
       status: false,
       autosave: {
         enabled: true,
         delay: 1000,
       },
     }),
-    [],
+    []
   );
 
   return (
@@ -46,7 +51,11 @@ export const AddPost = () => {
         </Button>
       )}
       {imageUrl && (
-        <img className={styles.image} src={`http://localhost:4444${imageUrl}`} alt="Uploaded" />
+        <img
+          className={styles.image}
+          src={`http://localhost:4444${imageUrl}`}
+          alt="Uploaded"
+        />
       )}
       <br />
       <br />
@@ -56,8 +65,18 @@ export const AddPost = () => {
         placeholder="Заголовок статьи..."
         fullWidth
       />
-      <TextField classes={{ root: styles.tags }} variant="standard" placeholder="Тэги" fullWidth />
-      <SimpleMDE className={styles.editor} value={value} onChange={onChange} options={options} />
+      <TextField
+        classes={{ root: styles.tags }}
+        variant="standard"
+        placeholder="Тэги"
+        fullWidth
+      />
+      <SimpleMDE
+        className={styles.editor}
+        value={value}
+        onChange={onChange}
+        options={options}
+      />
       <div className={styles.buttons}>
         <Button size="large" variant="contained">
           Опубликовать
