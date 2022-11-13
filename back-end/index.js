@@ -2,6 +2,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import multer from 'multer'
 import corse from 'cors'
+import fs from 'fs'
 
 import {
   registerValidation,
@@ -61,6 +62,15 @@ app.get('/auth/me', checkAuth, UserController.getMe)
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
   res.json({
     url: `/uploads/${req.file.originalname}`,
+  })
+})
+app.post('/upload-remove', checkAuth, (req, res) => {
+  fs.unlink('.' + req.body.name, (err) => {
+    if (err) {
+      console.error(err)
+      return
+    }
+    // file removed
   })
 })
 
