@@ -20,6 +20,11 @@ export const Home = () => {
     isError: isErrorPosts,
   } = useGetPostsQuery(undefined, { refetchOnMountOrArgChange: true });
 
+  const copy = posts?.slice();
+  const sorted = copy?.sort((a, b) =>
+    Date.parse(a.createdAt) < Date.parse(b.createdAt) ? 1 : -1
+  );
+
   return (
     <>
       <Tabs
@@ -37,7 +42,7 @@ export const Home = () => {
             ? [...Array(3)].map((_, index) => (
                 <Post key={index} isLoading={true} />
               ))
-            : posts?.map((p) => (
+            : sorted?.map((p) => (
                 <Post
                   key={p._id}
                   id={p._id}

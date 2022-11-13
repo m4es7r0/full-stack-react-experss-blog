@@ -52,7 +52,7 @@ export const AddPost = () => {
     makePost({
       title: fields.title,
       text: fields.value,
-      tags : fields.tags.trim().split(', '),
+      tags : !fields.tags ? [] : fields.tags.trim().split(', '),
       imageUrl: `http://localhost:4000${fields.image.url}`
     })
     navigate('/')
