@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 import multer from "multer";
 import corse from "cors";
 import fs from "fs";
-require('dotenv').config()
 
 import {
   registerValidation,
