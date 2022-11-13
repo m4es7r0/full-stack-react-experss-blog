@@ -60,6 +60,13 @@ const api = createApi({
         body,
       }),
     }),
+    removeFile: build.mutation({
+      query: (body) => ({
+        url: "upload-remove",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -72,6 +79,7 @@ export const {
   useRegisterMutation,
   useUploadFileMutation,
   useMakePostMutation,
+  useRemoveFileMutation
 } = api;
 
 export default api;

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import {
   useUploadFileMutation,
   useMakePostMutation,
+  useRemoveFileMutation
 } from "../../redux/api/api";
 
 import TextField from "@mui/material/TextField";
@@ -21,6 +22,7 @@ export const AddPost = () => {
   const navigate = useNavigate()
 
   const [uploadFile] = useUploadFileMutation();
+  const [removeFile] = useRemoveFileMutation();
   const [makePost] = useMakePostMutation();
 
   const inputImageRef = React.useRef(null);
@@ -41,6 +43,7 @@ export const AddPost = () => {
   };
 
   const onClickRemoveImage = () => {
+    removeFile({name: `${fields.image.url}`})
     setFields((prev) => ({ ...prev, image: "" }));
   };
 
