@@ -8,6 +8,8 @@ import { Post } from "../components/Post";
 import { Index } from "../components/AddComment";
 import { CommentsBlock } from "../components/CommentsBlock";
 
+import ReactMarkdown from 'react-markdown'
+
 export const FullPost = () => {
   const { postId } = useParams();
   const { data, isLoading, isError, error } = useGetPostByIdQuery(postId);
@@ -34,7 +36,7 @@ export const FullPost = () => {
               tags={data.tags}
               isFullPost
             >
-              {data.text}
+              <ReactMarkdown children={data.text}/>
             </Post>
           )}
           <CommentsBlock

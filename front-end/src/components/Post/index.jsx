@@ -27,7 +27,7 @@ export const Post = ({
   isLoading,
   isEditable,
 }) => {
-  const [removePost] = useRemovePostMutation();
+  const [removePost, {isLoading: isDeleting}] = useRemovePostMutation();
 
   if (isLoading) {
     return <PostSkeleton />;
@@ -42,7 +42,7 @@ export const Post = ({
               <EditIcon />
             </IconButton>
           </Link>
-          <IconButton onClick={() => removePost(id)} color="secondary">
+          <IconButton disabled={isDeleting} onClick={() => removePost(id)} color="secondary">
             <DeleteIcon />
           </IconButton>
         </div>
