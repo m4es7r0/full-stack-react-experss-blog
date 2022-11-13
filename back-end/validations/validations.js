@@ -20,12 +20,12 @@ export const postCreateValidation = [
   body('title', 'write title').isLength({ min: 3 }).isString(),
   body('text', 'write text').isLength({ min: 5 }).isString(),
   body('tags', 'ivalid format tags').optional().isArray(),
-  body('imageUrl', 'invalid url of image').optional().isURL(),
+  body('imageUrl', 'invalid url of image').optional().isString(),
 ]
 
 export const postUpdateValidation = [
   body('title', 'write title').isLength({ min: 3 }).isString(),
   body('text', 'write text').isLength({ min: 5 }).isString(),
   body('tags', 'ivalid format tags').optional().isArray(),
-  body('imageUrl', 'invalid url of image').optional().isURL(),
+  body('imageUrl', 'invalid url of image').optional().isString(),
 ]
