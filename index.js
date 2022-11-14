@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import multer from "multer";
 import corse from "cors";
 import fs from "fs";
+import dotenv from "dotenv";
+
 
 import {
   registerValidation,
@@ -11,12 +13,14 @@ import {
   postUpdateValidation,
 } from "./validations/validations.js";
 
+import watchTheFolder from "./utils/watchTheFolder.js";
 import handleValidationErrors from "./utils/handleValidationErrors.js";
 import checkAuth from "./utils/checkAuth.js";
 
 import * as UserController from "./controllers/UserController.js";
 import * as PostController from "./controllers/PostController.js";
 
+dotenv.config()
 const port = process.env.PORT || 8000;
 
 mongoose
@@ -48,6 +52,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+//clean folder when folder-size more then 99Mb
+watchTheFolder('uploads', 99)
+
 app.post(
   "/auth/login",
   loginValidation,
@@ -62,7 +69,7 @@ app.post(
 );
 app.get("/auth/me", checkAuth, UserController.getMe);
 
-app.post("/upload", upload.single("image"), (req, res) => {
+app.post("/upload", checkAuth, upload.single("image"), (req, res) => {
   res.json({
     url: `/uploads/${req.file.originalname}`,
   });
@@ -77,7 +84,7 @@ app.post("/upload-remove", checkAuth, (req, res) => {
   });
 });
 
-app.get("/posts", PostController.getAll);
+app.get("/posts/sort/:sortBy?", PostController.getAll);
 app.get("/posts/:postId", PostController.getOne);
 app.get("/tags", PostController.getLastTags);
 app.post(

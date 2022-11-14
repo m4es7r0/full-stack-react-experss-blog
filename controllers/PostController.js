@@ -34,7 +34,23 @@ export const getAll = async (req, res) => {
       return { ...data, user: userData };
     });
 
-    res.json(posts);
+    const copyArrayWithPosts = posts.slice();
+
+    //sortedByFreshDate
+    const sortedPostsByFreshDate = copyArrayWithPosts.sort((a, b) =>
+      Date.parse(a.createdAt) < Date.parse(b.createdAt) ? 1 : -1
+    );
+    //sortedByPopular
+    const sortedPostsByPopular = copyArrayWithPosts.sort((a, b) =>
+      Date.parse(a.viewsCount) < Date.parse(b.viewsCount) ? 1 : -1
+    );
+
+    console.log(req.params);
+
+    if (req.params.sortBy === "fresh") {
+      res.json(sortedPostsByFreshDate);
+    } else res.json(sortedPostsByPopular);
+
   } catch (e) {
     console.error(e);
     res.status(500).json({
