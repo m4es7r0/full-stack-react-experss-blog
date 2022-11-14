@@ -40,7 +40,7 @@ export const AddPost = () => {
     formData.append("image", file);
     uploadFile(formData)
       .unwrap()
-      .then((data) => setFields((prev) => ({ ...prev, image: data.url })));
+      .then((data) => setFields((prev) => ({ ...prev, image: data })));
   };
 
   const onClickRemoveImage = () => {
@@ -53,7 +53,7 @@ export const AddPost = () => {
   }, []);
 
   const onSubmit = () => {
-    if (isSuccess || !isLoading)
+    if (isSuccess || !isLoading) {
       makePost({
         title: fields.title,
         text: fields.value,
@@ -62,6 +62,7 @@ export const AddPost = () => {
       })
         .unwrap()
         .then((data) => navigate(`/posts/${data._id}`));
+    }
   };
 
   const options = React.useMemo(

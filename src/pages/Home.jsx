@@ -9,31 +9,29 @@ import { CommentsBlock } from "../components/CommentsBlock";
 
 import { useGetPostsQuery } from "../redux/api/api";
 import { useSelector } from "react-redux";
+import useSortPost from "../hooks/sortPostBy";
 
 export const Home = () => {
   const userData = useSelector(({ auth }) => auth.user);
 
   const {
-    data: posts,
+    data: posts = [],
     error: postsError,
     isLoading: isLoadingPosts,
     isError: isErrorPosts,
   } = useGetPostsQuery(undefined, { refetchOnMountOrArgChange: true });
 
-  const copy = posts?.slice();
-  const sorted = copy?.sort((a, b) =>
-    Date.parse(a.createdAt) < Date.parse(b.createdAt) ? 1 : -1
-  );
+  const { sortedPosts, sortByPopular, setSortByPopular  } = useSortPost(posts);
 
   return (
     <>
       <Tabs
         style={{ marginBottom: 15 }}
-        value={0}
+        value={sortByPopular ? 1 : 0}
         aria-label="basic tabs example"
       >
-        <Tab label="Новые" />
-        <Tab label="Популярные" />
+        <Tab label="Новые" onClick={() => setSortByPopular(false)} />
+        <Tab label="Популярные" onClick={() => setSortByPopular(true)} />
       </Tabs>
       <Grid container spacing={4}>
         <Grid xs={8} item>
@@ -42,7 +40,7 @@ export const Home = () => {
             ? [...Array(3)].map((_, index) => (
                 <Post key={index} isLoading={true} />
               ))
-            : sorted?.map((p) => (
+            : sortedPosts?.map((p) => (
                 <Post
                   key={p._id}
                   id={p._id}

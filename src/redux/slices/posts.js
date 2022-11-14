@@ -3,12 +3,17 @@ import api from "../api/api";
 
 const initialState = {
   tags: [],
+  sortByPopular: false,
 };
 
 const postsSlice = createSlice({
   name: "posts",
   initialState,
-  reducers: {},
+  reducers: {
+    setSortByPopular: (state, action) => {
+      state.sortByPopular = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addMatcher(
       api.endpoints.getTags.matchFulfilled,
@@ -20,3 +25,6 @@ const postsSlice = createSlice({
 });
 
 export default postsSlice.reducer;
+export const {
+  setSortByPopular
+} =postsSlice.actions

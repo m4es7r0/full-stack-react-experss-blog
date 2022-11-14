@@ -14,7 +14,7 @@ const api = createApi({
   endpoints: (build) => ({
     getPosts: build.query({
       query: () => ({
-        url: "posts",
+        url: `/posts`,
       }),
       providesTags: ["Posts"],
     }),
