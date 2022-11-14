@@ -84,7 +84,7 @@ export const Registration = () => {
         console.log(process.env.REACT_APP_API_URL, data.url);
         <Avatar
           sx={{ width: 100, height: 100 }}
-          src={data ? `${process.env.REACT_APP_API_URL}${data.url}` : ""}
+          src={data ? `${process.env.REACT_APP_API_URL}${data}` : ""}
           onClick={() => inputImageRef.current.click()}
         />
       </div>

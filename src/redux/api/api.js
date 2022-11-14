@@ -66,6 +66,9 @@ const api = createApi({
         method: "POST",
         body,
       }),
+      transformResponse: ({data}) => {
+        return data.url.replace('/', '')
+      }
     }),
     removeFile: build.mutation({
       query: (body) => ({
