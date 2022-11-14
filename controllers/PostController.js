@@ -34,22 +34,22 @@ export const getAll = async (req, res) => {
       return { ...data, user: userData };
     });
 
-    const copyArrayWithPosts = posts.slice();
+    ////TODO
+    // const copyArrayWithPosts = posts.slice();
 
-    //sortedByFreshDate
-    const sortedPostsByFreshDate = copyArrayWithPosts.sort((a, b) =>
-      Date.parse(a.createdAt) < Date.parse(b.createdAt) ? 1 : -1
-    );
-    //sortedByPopular
-    const sortedPostsByPopular = copyArrayWithPosts.sort((a, b) =>
-      Date.parse(a.viewsCount) < Date.parse(b.viewsCount) ? 1 : -1
-    );
+    // //sortedByFreshDate
+    // const sortedPostsByFreshDate = copyArrayWithPosts.sort((a, b) =>
+    //   Date.parse(a.createdAt) < Date.parse(b.createdAt) ? 1 : -1
+    // );
+    // //sortedByPopular
+    // const sortedPostsByPopular = copyArrayWithPosts.sort((a, b) =>
+    //   Date.parse(a.viewsCount) < Date.parse(b.viewsCount) ? 1 : -1
+    // );
 
-    console.log(req.params);
-
-    if (req.params.sortBy === "fresh") {
-      res.json(sortedPostsByFreshDate);
-    } else res.json(sortedPostsByPopular);
+    // if (req.params.sortBy === "fresh") {
+    //   res.json(sortedPostsByFreshDate);
+    // } else res.json(sortedPostsByPopular);
+    res.json(posts)
 
   } catch (e) {
     console.error(e);

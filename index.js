@@ -84,7 +84,7 @@ app.post("/upload-remove", checkAuth, (req, res) => {
   });
 });
 
-app.get("/posts/sort/:sortBy?", PostController.getAll);
+app.get("/posts/", PostController.getAll);
 app.get("/posts/:postId", PostController.getOne);
 app.get("/tags", PostController.getLastTags);
 app.post(
