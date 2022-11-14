@@ -24,8 +24,8 @@ export const postCreateValidation = [
 ]
 
 export const postUpdateValidation = [
-  body('title', 'write title').isLength({ min: 3 }).isString(),
-  body('text', 'write text').isLength({ min: 5 }).isString(),
+  body('title', 'write title').optional().isLength({ min: 3 }).isString(),
+  body('text', 'write text').optional().isLength({ min: 5 }).isString(),
   body('tags', 'ivalid format tags').optional().isArray(),
   body('imageUrl', 'invalid url of image').optional().isString(),
 ]
