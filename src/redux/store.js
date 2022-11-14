@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from '@reduxjs/toolkit/query/react'
 
 import api from "./api/api";
 import posts from "./slices/posts";
@@ -17,5 +18,7 @@ const store = configureStore({
   ],
   devTools: process.env.NODE_ENV !== "production",
 });
+
+setupListeners(store.dispatch)
 
 export default store;

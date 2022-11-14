@@ -1,12 +1,15 @@
 import React from "react";
-import { useAuthRedirect } from "../../hooks/authFaildRedirect";
 
-import { useNavigate } from "react-router-dom";
+import { useAuthRedirect } from "../../hooks/authFaildRedirect";
+import useGetSelectedPosts from "../../hooks/getSelectedPosts";
+
+import { useNavigate, Link } from "react-router-dom";
 
 import {
   useUploadFileMutation,
   useMakePostMutation,
   useRemoveFileMutation,
+  useUpdatePostMutation,
 } from "../../redux/api/api";
 
 import TextField from "@mui/material/TextField";
@@ -23,9 +26,9 @@ export const AddPost = () => {
 
   const [uploadFile] = useUploadFileMutation();
   const [removeFile] = useRemoveFileMutation();
-  const [makePost, { isSuccess, isLoading }] = useMakePostMutation();
+  const [updatePost] = useUpdatePostMutation();
+  const [makePost] = useMakePostMutation();
 
-  const inputImageRef = React.useRef(null);
   const [fields, setFields] = React.useState({
     image: "",
     imageByUrl: "",
@@ -33,6 +36,8 @@ export const AddPost = () => {
     title: "",
     tags: "",
   });
+  const inputImageRef = React.useRef(null);
+  const { postId } = useGetSelectedPosts(setFields);
 
   const handleChangeFile = (e) => {
     const formData = new FormData();
@@ -53,12 +58,28 @@ export const AddPost = () => {
   }, []);
 
   const onSubmit = () => {
-    if (isSuccess || !isLoading) {
+    if (postId) {
+      updatePost({
+        id: postId,
+        patch: {
+          title: fields.title,
+          text: fields.value,
+          tags: !fields.tags ? [] : fields.tags.trim().split(", "),
+          imageUrl: fields.image
+            ? `https://mern-blog-preview.herokuapp.com/${fields.image}`
+            : fields.imageByUrl,
+        },
+      })
+        .unwrap()
+        .then(() => navigate(`/posts/${postId}`));
+    } else {
       makePost({
         title: fields.title,
         text: fields.value,
         tags: !fields.tags ? [] : fields.tags.trim().split(", "),
-        imageUrl: fields.image ? `https://mern-blog-preview.herokuapp.com/${fields.image}` : fields.imageByUrl,
+        imageUrl: fields.image
+          ? `https://mern-blog-preview.herokuapp.com/${fields.image}`
+          : fields.imageByUrl,
       })
         .unwrap()
         .then((data) => navigate(`/posts/${data._id}`));
@@ -86,8 +107,8 @@ export const AddPost = () => {
         <div>
           <Button
             onClick={() => {
-              inputImageRef.current.click()
-              setFields(prev => ({...prev, imageByUrl: ""}))
+              inputImageRef.current.click();
+              setFields((prev) => ({ ...prev, imageByUrl: "" }));
             }}
             variant="outlined"
             size="large"
@@ -104,9 +125,9 @@ export const AddPost = () => {
             placeholder="или url картинки"
             value={fields.imageByUrl}
             onChange={(e) => {
-              setFields((prev) => ({ ...prev, imageByUrl: e.target.value }))
-              if (fields.image) onClickRemoveImage()
-            } }
+              setFields((prev) => ({ ...prev, imageByUrl: e.target.value }));
+              if (fields.image) onClickRemoveImage();
+            }}
           />
           {fields.image && (
             <Button
@@ -122,7 +143,11 @@ export const AddPost = () => {
         {(fields.image || fields.imageByUrl) && (
           <img
             className={styles.image}
-            src={fields.image ? `https://mern-blog-preview.herokuapp.com/${fields.image}` : fields.imageByUrl}
+            src={
+              fields.image
+                ? `https://mern-blog-preview.herokuapp.com/${fields.image}`
+                : fields.imageByUrl
+            }
             alt="wrong url"
           />
         )}
@@ -155,13 +180,13 @@ export const AddPost = () => {
       />
       <div className={styles.buttons}>
         <Button onClick={onSubmit} size="large" variant="contained">
-          Опубликовать
+          {postId ? "Сохранить" : "Опубликовать"}
         </Button>
-        <a href="/">
+        <Link to="/">
           <Button size="large" color="error" variant="contained">
             Отмена
           </Button>
-        </a>
+        </Link>
       </div>
     </Paper>
   );

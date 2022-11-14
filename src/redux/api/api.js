@@ -3,14 +3,14 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://mern-blog-preview.herokuapp.com/',
+    baseUrl: "https://mern-blog-preview.herokuapp.com/",
     prepareHeaders: (headers) => {
       const token = window.localStorage.getItem("token");
       if (token) headers.set("Authorization", token);
       return headers;
     },
   }),
-  tagTypes: ["Posts"],
+  tagTypes: ["Posts", "Post"],
   endpoints: (build) => ({
     getPosts: build.query({
       query: () => ({
@@ -22,7 +22,7 @@ const api = createApi({
       query: (id) => ({
         url: `posts/${id}`,
       }),
-      providesTags: ["Posts"],
+      providesTags: ["Post"],
     }),
     makePost: build.mutation({
       query: (body) => ({
@@ -31,12 +31,20 @@ const api = createApi({
         body,
       }),
     }),
+    updatePost: build.mutation({
+      query: (data) => ({
+        url: `posts/${data.id}`,
+        method: "PATCH",
+        body: data.patch,
+      }),
+      invalidatesTags: ["Post"]
+    }),
     removePost: build.mutation({
       query: (id) => ({
         url: `posts/${id}`,
-        method: "DELETE"
+        method: "DELETE",
       }),
-      invalidatesTags: ['Posts']
+      invalidatesTags: ["Posts"],
     }),
     getTags: build.query({
       query: () => ({
@@ -67,8 +75,8 @@ const api = createApi({
         body,
       }),
       transformResponse: (data) => {
-        return data.url.replace('/', '')
-      }
+        return data.url.replace("/", "");
+      },
     }),
     removeFile: build.mutation({
       query: (body) => ({
@@ -81,16 +89,19 @@ const api = createApi({
 });
 
 export const {
+  usePrefetch,
   useGetPostsQuery,
   useGetPostByIdQuery,
+  useLazyGetPostByIdQuery,
   useGetTagsQuery,
   useLoginUserMutation,
   useLazyAuthMeQuery,
   useRegisterMutation,
-  useUploadFileMutation,
   useMakePostMutation,
+  useRemovePostMutation,
+  useUploadFileMutation,
+  useUpdatePostMutation,
   useRemoveFileMutation,
-  useRemovePostMutation
 } = api;
 
 export default api;

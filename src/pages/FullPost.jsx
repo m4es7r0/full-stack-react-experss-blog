@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
 
 import { useParams } from "react-router-dom";
 import { useGetPostByIdQuery } from "../redux/api/api";
@@ -13,8 +12,6 @@ import ReactMarkdown from 'react-markdown'
 export const FullPost = () => {
   const { postId } = useParams();
   const { data, isLoading, isError, error } = useGetPostByIdQuery(postId);
-
-  const tags = useSelector((state) => state.posts.tags);
 
   return (
     <>
