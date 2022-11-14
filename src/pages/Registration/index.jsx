@@ -47,7 +47,7 @@ export const Registration = () => {
   const onSubmit = (values) => {
     const reqData = {
       ...values,
-      avatarUrl: data ? process.env.REACT_APP_API_URL + data?.url : "",
+      avatarUrl: data ? 'https://mern-blog-preview.herokuapp.com/' + data : "",
     };
     reg(reqData)
       .then(({ data }) => {
@@ -74,17 +74,15 @@ export const Registration = () => {
         </Typography>
       </Paper>
     );
-
   return (
     <Paper classes={{ root: styles.root }}>
       <Typography classes={{ root: styles.title }} variant="h5">
         Создание аккаунта
       </Typography>
       <div className={styles.avatar}>
-        console.log(process.env.REACT_APP_API_URL, data.url);
         <Avatar
           sx={{ width: 100, height: 100 }}
-          src={data ? `${process.env.REACT_APP_API_URL}${data}` : ""}
+          src={data ? `https://mern-blog-preview.herokuapp.com/${data}` : ""}
           onClick={() => inputImageRef.current.click()}
         />
       </div>

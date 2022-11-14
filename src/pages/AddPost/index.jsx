@@ -34,9 +34,6 @@ export const AddPost = () => {
     tags: "",
   });
 
-  // if (fields.image) setFields(prev => ({...prev, imageByUrl: ""}))
-  // if (fields.imageByUrl) setFields(prev => ({...prev, image: ""}))
-
   const handleChangeFile = (e) => {
     const formData = new FormData();
     const file = e.target.files[0];
@@ -61,7 +58,7 @@ export const AddPost = () => {
         title: fields.title,
         text: fields.value,
         tags: !fields.tags ? [] : fields.tags.trim().split(", "),
-        imageUrl: fields.image ? `${process.env.REACT_APP_API_URL}${fields.image}` : fields.imageByUrl,
+        imageUrl: fields.image ? `https://mern-blog-preview.herokuapp.com/${fields.image}` : fields.imageByUrl,
       })
         .unwrap()
         .then((data) => navigate(`/posts/${data._id}`));
@@ -124,7 +121,7 @@ export const AddPost = () => {
         {(fields.image || fields.imageByUrl) && (
           <img
             className={styles.image}
-            src={fields.image ? `${process.env.REACT_APP_API_URL}${fields.image}` : fields.imageByUrl}
+            src={fields.image ? `https://mern-blog-preview.herokuapp.com/${fields.image}` : fields.imageByUrl}
             alt="wrong url"
           />
         )}

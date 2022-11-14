@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.REACT_APP_API_URL,
+    baseUrl: 'https://mern-blog-preview.herokuapp.com/',
     prepareHeaders: (headers) => {
       const token = window.localStorage.getItem("token");
       if (token) headers.set("Authorization", token);
@@ -66,7 +66,7 @@ const api = createApi({
         method: "POST",
         body,
       }),
-      transformResponse: ({data}) => {
+      transformResponse: (data) => {
         return data.url.replace('/', '')
       }
     }),
