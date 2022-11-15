@@ -3,7 +3,6 @@ import api from "../api/api";
 
 const initialState = {
   user: null,
-  imgUrlForRegister: "",
 };
 
 const authSlice = createSlice({
@@ -12,9 +11,6 @@ const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.user = null;
-    },
-    setUrlImgForRegister: (state, action) => {
-      state.imgUrlForRegister = action.payload;
     },
   },
   extraReducers: (build) => {

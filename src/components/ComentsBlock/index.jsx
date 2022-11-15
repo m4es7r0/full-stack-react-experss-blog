@@ -1,12 +1,20 @@
 import React from "react";
 
-import { useGetComentQuery } from "../../redux/api/api";
+import {
+  useGetComentQuery,
+  useRemoveComentMutation,
+  useUpdateComentMutation,
+} from "../../redux/api/api";
 import { useSelector } from "react-redux";
+
+import Modal from "../../components/Modal";
 
 import { SideBlock } from "../SideBlock";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Clear";
 import EditIcon from "@mui/icons-material/Edit";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
@@ -18,8 +26,13 @@ import Skeleton from "@mui/material/Skeleton";
 import styles from "./CommentsBlock.module.scss";
 
 export const CommentsBlock = ({ children, items, isEditable }) => {
-  const { data, error, isLoading, isError } = useGetComentQuery();
   const userData = useSelector(({ auth }) => auth.user);
+
+  const { data, error, isLoading, isError } = useGetComentQuery();
+  const [update] = useUpdateComentMutation();
+  const [remove] = useRemoveComentMutation();
+
+  const [text, setText] = React.useState("");
 
   return (
     <SideBlock title="Комментарии">
@@ -51,12 +64,55 @@ export const CommentsBlock = ({ children, items, isEditable }) => {
                     secondary={obj.text}
                   />
                   <div className={styles.btn}>
-                    <IconButton disabled={obj.user._id !== userData?._id} color="primary">
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton disabled={obj.user._id !== userData?._id} color="secondary">
-                      <DeleteIcon />
-                    </IconButton>
+                    <Modal
+                      title="Редактирование Комментария"
+                      component={
+                        <>
+                          <TextField
+                            label="твой комментарий"
+                            multiline
+                            fullWidth
+                            type="text"
+                            value={text}
+                            onChange={(e) => setText(e.target.value)}
+                          />
+                          <Button
+                            variant="contained"
+                            style={{ alignSelf: "flex-start" }}
+                            disabled={text.length < 5}
+                            onClick={() => {
+                              update({
+                                id: obj._id,
+                                patch: {
+                                  text,
+                                },
+                              });
+                            }}
+                          >
+                            {"Cохранить"}
+                          </Button>
+                        </>
+                      }
+                    >
+                      <span>
+                        <IconButton
+                          onClick={() => setText(obj.text)}
+                          disabled={obj.user._id !== userData?._id}
+                          color="primary"
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </span>
+                    </Modal>
+                    <span>
+                      <IconButton
+                        onClick={() => remove(obj._id)}
+                        disabled={obj.user._id !== userData?._id}
+                        color="secondary"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </span>
                   </div>
                 </>
               )}

@@ -1,12 +1,8 @@
 import React from "react";
 
-import {useSelector, useDispatch} from "react-redux";
-import { setUrlImgForRegister } from "../../redux/slices/auth";
-
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { TextField } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -23,18 +19,15 @@ const style = {
   alignItems: "center",
 };
 
-const ModalForRegistration = ({ children }) => {
+const PopUp = ({
+  children,
+  title,
+  component,
+  componentProp = null,
+}) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const dispatch = useDispatch()
-  const value = useSelector(state => state.auth.imgUrlForRegister)
-  const [url, setUrl] = React.useState(value)
-
-  if (!open) {
-    dispatch(setUrlImgForRegister(url))
-  }
 
   return (
     <>
@@ -46,18 +39,15 @@ const ModalForRegistration = ({ children }) => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            URL изображения
+            {title}
           </Typography>
-          <TextField
-            label="image url"
-            type="text"
-            value={url}
-            onChange={e => setUrl(e.target.value)}
-          />
+          {component
+            ? React.cloneElement(component, { ...componentProp })
+            : null}
         </Box>
       </Modal>
     </>
   );
 };
 
-export default ModalForRegistration;
+export default PopUp;

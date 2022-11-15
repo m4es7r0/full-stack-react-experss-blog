@@ -5,3 +5,9 @@
 .title {
   padding: 15px 15px 0 15px;
 }
+
+@media (max-with: 375px) {
+  .title {
+    background-color: red;
+  }
+}

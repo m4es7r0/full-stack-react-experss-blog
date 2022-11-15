@@ -1,6 +1,5 @@
 import React from "react";
 
-import { useSelector } from "react-redux";
 import { useLazyAuthMeQuery, useRegisterMutation } from "../../redux/api/api";
 
 import { useNavigate } from "react-router-dom";
@@ -11,36 +10,17 @@ import TextField from "@mui/material/TextField";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
-import ModalForRegistration from "../../components/ModalForRegistration";
+import Modal from "../../components/Modal";
 
 import styles from "./Login.module.scss";
 
 export const Registration = () => {
-  const imageUrl = useSelector((state) => state.auth.imgUrlForRegister);
+  const navigate = useNavigate();
 
   const [reg, { error, isLoading }] = useRegisterMutation();
   const [isAuth] = useLazyAuthMeQuery();
-
-  const navigate = useNavigate();
-
-  const msgFromServ = (arr, param) => {
-    const _in = arr?.filter((e) => e?.param === param);
-    return _in[0]?.msg;
-  };
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm({
-    defaultValues: {
-      fullName: "",
-      email: "",
-      password: "",
-      avatarUrl: "",
-    },
-    mode: "all",
-  });
+  
+  const [imageUrl, setUrl] = React.useState("");
 
   const onSubmit = (values) => {
     const reqData = {
@@ -57,7 +37,26 @@ export const Registration = () => {
       .then(() => navigate("/"));
   };
 
-  if (isLoading)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm({
+    defaultValues: {
+      fullName: "",
+      email: "",
+      password: "",
+      avatarUrl: "",
+    },
+    mode: "all",
+  });
+
+  const msgFromServ = (arr, param) => {
+    const _in = arr?.filter((e) => e?.param === param);
+    return _in[0]?.msg;
+  };
+
+  if (isLoading) {
     return (
       <Paper classes={{ root: styles.root }}>
         <Typography classes={{ root: styles.title }} variant="h5">
@@ -65,18 +64,27 @@ export const Registration = () => {
         </Typography>
       </Paper>
     );
+  }
+
   return (
     <Paper classes={{ root: styles.root }}>
       <Typography classes={{ root: styles.title }} variant="h5">
         Создание аккаунта
       </Typography>
       <div className={styles.avatar}>
-        <ModalForRegistration>
-          <Avatar
-            sx={{ width: 100, height: 100 }}
-            src={imageUrl}
-          />
-        </ModalForRegistration>
+        <Modal
+          title="URL изображения"
+          component={
+            <TextField
+              label="image url"
+              type="text"
+              value={imageUrl}
+              onChange={(e) => setUrl(e.target.value)}
+            />
+          }
+        >
+          <Avatar sx={{ width: 100, height: 100 }} src={imageUrl} />
+        </Modal>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextField
