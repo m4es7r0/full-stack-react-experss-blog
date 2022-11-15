@@ -1,5 +1,7 @@
 import React from "react";
 
+import { useGetComentQuery } from "../redux/api/api";
+
 import { SideBlock } from "./SideBlock";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
@@ -9,11 +11,18 @@ import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import Skeleton from "@mui/material/Skeleton";
 
-export const CommentsBlock = ({ items, children, isLoading = true }) => {
+export const CommentsBlock = ({ children, items }) => {
+  const { data, error, isLoading, isError } = useGetComentQuery();
+
   return (
     <SideBlock title="Комментарии">
+      {isError && !data && (
+        <ListItem>
+          <ListItemText primary={error.error} />
+        </ListItem>
+      )}
       <List>
-        {(isLoading ? [...Array(5)] : items).map((obj, index) => (
+        {(isLoading ? [...Array(5)] : items)?.map((obj, index) => (
           <React.Fragment key={index}>
             <ListItem alignItems="flex-start">
               <ListItemAvatar>

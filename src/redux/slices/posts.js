@@ -3,8 +3,9 @@ import api from "../api/api";
 
 const initialState = {
   selectedPosts: {},
-  tags: [],
   sortByPopular: false,
+  tags: [],
+  coments: [],
 };
 
 const postsSlice = createSlice({
@@ -20,13 +21,16 @@ const postsSlice = createSlice({
       .addMatcher(api.endpoints.getTags.matchFulfilled, (state, action) => {
         state.tags = action.payload;
       })
+      .addMatcher(api.endpoints.getComent.matchFulfilled, (state, action) => {
+        state.coments = action.payload;
+      })
       .addMatcher(api.endpoints.getPostById.matchFulfilled, (state, action) => {
-        state.selectedPosts[action.payload._id] = action.payload
+        state.selectedPosts[action.payload._id] = action.payload;
       });
   },
 });
 
-export const selectPost = ((state, id) => state.posts.selectPost[id])
+export const selectPost = (state, id) => state.posts.selectPost[id];
 
 export default postsSlice.reducer;
 export const { setSortByPopular } = postsSlice.actions;

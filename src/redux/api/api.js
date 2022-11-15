@@ -10,7 +10,7 @@ const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Posts", "Post"],
+  tagTypes: ["Posts", "Post", "Tags", "Coments"],
   endpoints: (build) => ({
     getPosts: build.query({
       query: () => ({
@@ -22,7 +22,7 @@ const api = createApi({
       query: (id) => ({
         url: `posts/${id}`,
       }),
-      providesTags: ["Post"],
+      providesTags: ["Post", "Coments"],
     }),
     makePost: build.mutation({
       query: (body) => ({
@@ -37,7 +37,7 @@ const api = createApi({
         method: "PATCH",
         body: data.patch,
       }),
-      invalidatesTags: ["Post"]
+      invalidatesTags: ["Post"],
     }),
     removePost: build.mutation({
       query: (id) => ({
@@ -85,6 +85,33 @@ const api = createApi({
         body,
       }),
     }),
+    getComent: build.query({
+      query: () => "coment",
+      providesTags: ["Coments"],
+    }),
+    makeComent: build.mutation({
+      query: (body) => ({
+        url: "coment",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Coments"],
+    }),
+    removeComent: build.mutation({
+      query: (id) => ({
+        url: `coment/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Coments"],
+    }),
+    updateComent: build.mutation({
+      query: (data) => ({
+        url: `coment/${data.id}`,
+        method: "PATCH",
+        body: data.patch,
+      }),
+      invalidatesTags: ["Coments"],
+    }),
   }),
 });
 
@@ -102,6 +129,10 @@ export const {
   useUploadFileMutation,
   useUpdatePostMutation,
   useRemoveFileMutation,
+  useGetComentQuery,
+  useMakeComentMutation,
+  useUpdateComentMutation,
+  useRemoveComentMutation,
 } = api;
 
 export default api;

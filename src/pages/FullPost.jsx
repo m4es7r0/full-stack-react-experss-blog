@@ -2,16 +2,22 @@ import React from "react";
 
 import { useParams } from "react-router-dom";
 import { useGetPostByIdQuery } from "../redux/api/api";
+import { useSelector } from "react-redux";
 
 import { Post } from "../components/Post";
 import { Index } from "../components/AddComment";
 import { CommentsBlock } from "../components/CommentsBlock";
 
-import ReactMarkdown from 'react-markdown'
+import ReactMarkdown from "react-markdown";
 
 export const FullPost = () => {
   const { postId } = useParams();
+  const coments = useSelector(({ posts }) => posts.coments);
+  const userData = useSelector(({ auth }) => auth.user);
+
   const { data, isLoading, isError, error } = useGetPostByIdQuery(postId);
+
+  const isHasComent = coments.filter((obj) => obj.postId === postId);
 
   return (
     <>
@@ -29,33 +35,16 @@ export const FullPost = () => {
               user={data.user}
               createdAt={new Date(data.createdAt).toDateString()}
               viewsCount={data.viewsCount}
-              commentsCount={0}
+              comentsCount={data.comentsCount}
               tags={data.tags}
+              isEditable={data.user._id === userData?._id}
               isFullPost
             >
-              <ReactMarkdown children={data.text}/>
+              <ReactMarkdown children={data.text} />
             </Post>
           )}
-          <CommentsBlock
-            items={[
-              {
-                user: {
-                  fullName: "Вася Пупкин",
-                  avatarUrl: "https://mui.com/static/images/avatar/1.jpg",
-                },
-                text: "Это тестовый комментарий 555555",
-              },
-              {
-                user: {
-                  fullName: "Иван Иванов",
-                  avatarUrl: "https://mui.com/static/images/avatar/2.jpg",
-                },
-                text: "When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top",
-              },
-            ]}
-            isLoading={false}
-          >
-            <Index />
+          <CommentsBlock items={isHasComent} isLoading={false}>
+            <Index postId={postId} />
           </CommentsBlock>
         </>
       )}

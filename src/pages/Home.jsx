@@ -13,6 +13,7 @@ import useSortPost from "../hooks/sortPostBy";
 
 export const Home = () => {
   const userData = useSelector(({ auth }) => auth.user);
+  const coments = useSelector(({ posts }) => posts.coments);
 
   const {
     data: posts = [],
@@ -21,7 +22,12 @@ export const Home = () => {
     isError: isErrorPosts,
   } = useGetPostsQuery(undefined, { refetchOnMountOrArgChange: true });
 
-  const { sortedPosts, sortByPopular, setSortByPopular  } = useSortPost(posts);
+  const { sortedPosts, sortByPopular, setSortByPopular } = useSortPost(posts);
+  const sertedComents = coments
+    .slice()
+    .sort((a, b) =>
+      Date.parse(a.createdAt) < Date.parse(b.createdAt) ? 1 : -1
+    );
 
   return (
     <>
@@ -35,7 +41,7 @@ export const Home = () => {
       </Tabs>
       <Grid container spacing={4}>
         <Grid xs={8} item>
-          {isErrorPosts && !posts && <h2>{postsError.error}</h2>}
+          {isErrorPosts && <h2>{postsError.error}</h2>}
           {isLoadingPosts
             ? [...Array(3)].map((_, index) => (
                 <Post key={index} isLoading={true} />
@@ -49,7 +55,7 @@ export const Home = () => {
                   user={p.user}
                   createdAt={new Date(p.createdAt).toDateString()}
                   viewsCount={p.viewsCount}
-                  commentsCount={0}
+                  comentsCount={p.comentsCount}
                   tags={p.tags}
                   isEditable={userData?._id === p.user._id}
                 />
@@ -58,23 +64,25 @@ export const Home = () => {
         <Grid xs={4} item>
           <TagsBlock />
           <CommentsBlock
-            items={[
-              {
-                user: {
-                  fullName: "Вася Пупкин",
-                  avatarUrl: "https://mui.com/static/images/avatar/1.jpg",
-                },
-                text: "Это тестовый комментарий",
-              },
-              {
-                user: {
-                  fullName: "Иван Иванов",
-                  avatarUrl: "https://mui.com/static/images/avatar/2.jpg",
-                },
-                text: "When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top",
-              },
-            ]}
-            isLoading={false}
+            // items={[
+            //   {
+            //     user: {
+            //       fullName: "Вася Пупкин",
+            //       avatarUrl: "https://mui.com/static/images/avatar/1.jpg",
+            //     },
+            //     text: "Это тестовый комментарий",
+            //   },
+            //   {
+            //     user: {
+            //       fullName: "Иван Иванов",
+            //       avatarUrl: "https://mui.com/static/images/avatar/2.jpg",
+            //     },
+            //     text: "When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top",
+            //   },
+            // ]}
+            // error={{isError: isErrorComents, error: comentsError}}
+            items={sertedComents.slice(0, 5)}
+            // isLoading={isLoadingComents}
           />
         </Grid>
       </Grid>
