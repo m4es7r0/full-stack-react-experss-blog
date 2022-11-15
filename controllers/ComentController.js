@@ -39,7 +39,7 @@ export const create = async (req, res) => {
       },
       {
         $inc: {
-          viewsCount: 1,
+          comentsCount: 1,
         },
       },
       {
