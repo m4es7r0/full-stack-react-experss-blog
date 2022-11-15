@@ -40,6 +40,7 @@ export const create = async (req, res) => {
       {
         $inc: {
           comentsCount: 1,
+          viewsCount: -1,
         },
       },
       {
