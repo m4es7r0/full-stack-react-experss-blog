@@ -8,7 +8,8 @@ export const getAll = async (req, res) => {
     const coments = _coments.map(({ _doc }) => {
       const { user, ...data } = _doc;
       const { passwordHash, createdAt, updatedAt, __v, ...userData } = user._doc;
-
+      
+      if (!user) return res.status(500).json({message: "db error"})
       return { ...data, user: userData };
     });
 
