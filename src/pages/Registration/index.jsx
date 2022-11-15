@@ -1,11 +1,9 @@
 import React from "react";
 
+import { useSelector } from "react-redux";
+import { useLazyAuthMeQuery, useRegisterMutation } from "../../redux/api/api";
+
 import { useNavigate } from "react-router-dom";
-import {
-  useLazyAuthMeQuery,
-  useRegisterMutation,
-  useUploadFileMutation,
-} from "../../redux/api/api";
 import { useForm } from "react-hook-form";
 
 import Typography from "@mui/material/Typography";
@@ -13,15 +11,15 @@ import TextField from "@mui/material/TextField";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
+import ModalForRegistration from "../../components/ModalForRegistration";
 
 import styles from "./Login.module.scss";
 
 export const Registration = () => {
-  const [reg, { error, isLoading }] = useRegisterMutation();
-  const [uploadFile, { data }] = useUploadFileMutation();
-  const [isAuth] = useLazyAuthMeQuery();
+  const imageUrl = useSelector((state) => state.auth.imgUrlForRegister);
 
-  const inputImageRef = React.useRef(null);
+  const [reg, { error, isLoading }] = useRegisterMutation();
+  const [isAuth] = useLazyAuthMeQuery();
 
   const navigate = useNavigate();
 
@@ -47,7 +45,7 @@ export const Registration = () => {
   const onSubmit = (values) => {
     const reqData = {
       ...values,
-      avatarUrl: data ? 'https://mern-blog-preview.herokuapp.com/' + data : "",
+      avatarUrl: imageUrl,
     };
     reg(reqData)
       .then(({ data }) => {
@@ -57,13 +55,6 @@ export const Registration = () => {
       })
       .then(() => isAuth())
       .then(() => navigate("/"));
-  };
-
-  const handleChangeFile = (e) => {
-    const formData = new FormData();
-    const file = e.target.files[0];
-    formData.append("image", file);
-    uploadFile(formData).unwrap();
   };
 
   if (isLoading)
@@ -80,18 +71,13 @@ export const Registration = () => {
         Создание аккаунта
       </Typography>
       <div className={styles.avatar}>
-        <Avatar
-          sx={{ width: 100, height: 100 }}
-          src={data ? `https://mern-blog-preview.herokuapp.com/${data}` : ""}
-          onClick={() => inputImageRef.current.click()}
-        />
+        <ModalForRegistration>
+          <Avatar
+            sx={{ width: 100, height: 100 }}
+            src={imageUrl}
+          />
+        </ModalForRegistration>
       </div>
-      <input
-        ref={inputImageRef}
-        type="file"
-        onChange={handleChangeFile}
-        hidden
-      />
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextField
           className={styles.field}
