@@ -8,7 +8,7 @@ export const getAll = async (req, res) => {
     const coments = _coments.map(({ _doc }) => {
       const { user, ...data } = _doc;
       const { passwordHash, createdAt, updatedAt, __v, ...userData } = user._doc;
-      
+
       if (!user) return res.status(500).json({message: "db error"})
       return { ...data, user: userData };
     });
@@ -29,7 +29,7 @@ export const create = async (req, res) => {
       text: req.body.text,
       postId: req.body.postId,
     });
-    const coment = await _doc.save();
+    _doc.save();
 
     const _postId = await req.body.postId;
 
@@ -64,10 +64,7 @@ export const create = async (req, res) => {
             message: "post not found",
           });
         }
-
-        const _coment = {...coment._doc, user: doc.user}
-
-        res.json(_coment)
+        res.json({success: true})
       }
     ).populate("user");
   } catch (e) {
