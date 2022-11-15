@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 import { Post } from "../components/Post";
 import { Index } from "../components/AddComment";
-import { CommentsBlock } from "../components/CommentsBlock";
+import { CommentsBlock } from "../components";
 
 import ReactMarkdown from "react-markdown";
 
@@ -18,6 +18,7 @@ export const FullPost = () => {
   const { data, isLoading, isError, error } = useGetPostByIdQuery(postId);
 
   const isHasComent = coments.filter((obj) => obj.postId === postId);
+  const isAccessComentsForEdit = isHasComent.filter(c => c?.user._id === userData?._id)
 
   return (
     <>

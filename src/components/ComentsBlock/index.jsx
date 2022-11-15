@@ -1,8 +1,12 @@
 import React from "react";
 
-import { useGetComentQuery } from "../redux/api/api";
+import { useGetComentQuery } from "../../redux/api/api";
+import { useSelector } from "react-redux";
 
-import { SideBlock } from "./SideBlock";
+import { SideBlock } from "../SideBlock";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Clear";
+import EditIcon from "@mui/icons-material/Edit";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
@@ -11,8 +15,11 @@ import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import Skeleton from "@mui/material/Skeleton";
 
-export const CommentsBlock = ({ children, items }) => {
+import styles from "./CommentsBlock.module.scss";
+
+export const CommentsBlock = ({ children, items, isEditable }) => {
   const { data, error, isLoading, isError } = useGetComentQuery();
+  const userData = useSelector(({ auth }) => auth.user);
 
   return (
     <SideBlock title="Комментарии">
@@ -24,7 +31,7 @@ export const CommentsBlock = ({ children, items }) => {
       <List>
         {(isLoading ? [...Array(5)] : items)?.map((obj, index) => (
           <React.Fragment key={index}>
-            <ListItem alignItems="flex-start">
+            <ListItem className={styles.comment} alignItems="flex-start">
               <ListItemAvatar>
                 {isLoading ? (
                   <Skeleton variant="circular" width={40} height={40} />
@@ -38,10 +45,20 @@ export const CommentsBlock = ({ children, items }) => {
                   <Skeleton variant="text" height={18} width={230} />
                 </div>
               ) : (
-                <ListItemText
-                  primary={obj.user.fullName}
-                  secondary={obj.text}
-                />
+                <>
+                  <ListItemText
+                    primary={obj.user.fullName}
+                    secondary={obj.text}
+                  />
+                  <div className={styles.btn}>
+                    <IconButton disabled={obj.user._id !== userData?._id} color="primary">
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton disabled={obj.user._id !== userData?._id} color="secondary">
+                      <DeleteIcon />
+                    </IconButton>
+                  </div>
+                </>
               )}
             </ListItem>
             <Divider variant="inset" component="li" />

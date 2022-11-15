@@ -1,0 +1,14 @@
+.btn {
+  visibility: hidden;
+  button[disabled] {
+    color: transparent;
+  }
+}
+
+.comment {
+  &:hover {
+    button {
+      visibility: visible !important;
+    }
+  }
+}

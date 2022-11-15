@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 
 import { Post } from "../components/Post";
 import { TagsBlock } from "../components/TagsBlock";
-import { CommentsBlock } from "../components/CommentsBlock";
+import { CommentsBlock } from "../components";
 
 import { useGetPostsQuery } from "../redux/api/api";
 import { useSelector } from "react-redux";
@@ -82,7 +82,6 @@ export const Home = () => {
             // ]}
             // error={{isError: isErrorComents, error: comentsError}}
             items={sertedComents.slice(0, 5)}
-            // isLoading={isLoadingComents}
           />
         </Grid>
       </Grid>
