@@ -5,7 +5,6 @@ import corse from "cors";
 import fs from "fs";
 import dotenv from "dotenv";
 
-
 import {
   registerValidation,
   loginValidation,
@@ -19,8 +18,9 @@ import checkAuth from "./utils/checkAuth.js";
 
 import * as UserController from "./controllers/UserController.js";
 import * as PostController from "./controllers/PostController.js";
+import * as ComentController from "./controllers/ComentController.js";
 
-dotenv.config()
+dotenv.config();
 const port = process.env.PORT || 8000;
 
 mongoose
@@ -40,8 +40,8 @@ app.use("/uploads", express.static("uploads"));
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
-    if (!fs.existsSync('uploads')) {
-      fs.mkdirSync('uploads')
+    if (!fs.existsSync("uploads")) {
+      fs.mkdirSync("uploads");
     }
     cb(null, "uploads");
   },
@@ -53,7 +53,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 //clean folder when folder-size more then 99Mb
-watchTheFolder('uploads', 99)
+watchTheFolder("uploads", 99);
 
 app.post(
   "/auth/login",
@@ -75,7 +75,7 @@ app.post("/upload", checkAuth, upload.single("image"), (req, res) => {
   });
 });
 app.post("/upload-remove", checkAuth, (req, res) => {
-  fs.unlink("." + req.body.name, (err) => {
+  fs.unlink("uploads" + req.body.name, (err) => {
     if (err) {
       console.error(err);
       return;
@@ -102,6 +102,11 @@ app.patch(
   PostController.update
 );
 app.delete("/posts/:postId", checkAuth, PostController.remove);
+
+app.get("/coment", ComentController.getAll);
+app.post("/coment", checkAuth, ComentController.create);
+app.patch("/coment/:comentId", checkAuth, ComentController.update);
+app.delete("/coment/:comentId", checkAuth, ComentController.remove);
 
 app.listen(port, (err) => {
   if (err) return console.error(err);
