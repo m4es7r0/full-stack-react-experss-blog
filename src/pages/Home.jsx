@@ -39,7 +39,7 @@ export const Home = () => {
         <Tab label="Новые" onClick={() => setSortByPopular(false)} />
         <Tab label="Популярные" onClick={() => setSortByPopular(true)} />
       </Tabs>
-      <Grid container={window.innerWidth >= 400} spacing={4}>
+      <Grid container={window.innerWidth >= 500} spacing={4}>
         <Grid xs={8} item>
           {isErrorPosts && <h2>{postsError.error}</h2>}
           {isLoadingPosts
