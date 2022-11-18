@@ -14,7 +14,7 @@ const api = createApi({
   endpoints: (build) => ({
     getPosts: build.query({
       query: () => ({
-        url: `/posts`,
+        url: `posts`,
       }),
       providesTags: ["Posts"],
     }),
@@ -37,19 +37,18 @@ const api = createApi({
         method: "PATCH",
         body: data.patch,
       }),
-      invalidatesTags: ["Post"],
+      invalidatesTags: ["Post", "Tags", "Coments"],
     }),
     removePost: build.mutation({
       query: (id) => ({
         url: `posts/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Posts"],
+      invalidatesTags: ["Posts", "Tags", "Coments"],
     }),
     getTags: build.query({
-      query: () => ({
-        url: "tags",
-      }),
+      query: () => "tags",
+      providesTags: ["Tags"],
     }),
     loginUser: build.mutation({
       query: (body) => ({

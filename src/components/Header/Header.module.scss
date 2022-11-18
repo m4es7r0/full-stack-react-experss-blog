@@ -20,6 +20,7 @@
   border-radius: 5px;
   padding: 0 10px;
   text-decoration: none;
+  transition: all 0.2s ease !important;
 
   &:hover {
     background-color: #4361ee;
@@ -27,8 +28,11 @@
 }
 
 .buttons {
+  display: flex;
+
   button {
     margin-left: 10px;
+    height: 100%;
   }
 
   a {

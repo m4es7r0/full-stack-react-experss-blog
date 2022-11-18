@@ -26,7 +26,7 @@ export const TagsBlock = () => {
         </ListItem>
       )}
       <List>
-        {(isLoading ? [...Array(5)] : tags)?.map((name, i) => (
+        {(isLoading ? [...Array(5)] : tags.slice(0, 10))?.map((name, i) => (
           <Link
             style={{ textDecoration: "none", color: "black" }}
             to={`/tags/${name}`}

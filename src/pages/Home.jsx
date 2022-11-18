@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 import useSortPost from "../hooks/sortPostBy";
 import { useMUITheme } from "../hooks/materialTheme";
 
-export const Home = ({ byTag }) => {
+export const Home = () => {
   const matches = useMUITheme("md");
 
   const { tagName } = useParams();
@@ -32,8 +32,6 @@ export const Home = ({ byTag }) => {
     posts,
     tagName
   );
-
-  console.log(sortedPosts);
 
   const sertedComents = coments
     .slice()
@@ -58,21 +56,6 @@ export const Home = ({ byTag }) => {
           {isLoadingPosts
             ? [...Array(1)].map((_, index) => (
                 <Post key={index} isLoading={true} />
-              ))
-            : !byTag
-            ? sortedPosts?.map((p) => (
-                <Post
-                  key={p._id}
-                  id={p._id}
-                  title={p.title}
-                  imageUrl={p.imageUrl}
-                  user={p.user}
-                  createdAt={new Date(p.createdAt).toDateString()}
-                  viewsCount={p.viewsCount}
-                  comentsCount={p.comentsCount}
-                  tags={p.tags}
-                  isEditable={userData?._id === p.user._id}
-                />
               ))
             : sortedPosts?.map((p) => (
                 <Post
