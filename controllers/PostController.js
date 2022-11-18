@@ -49,8 +49,7 @@ export const getAll = async (req, res) => {
     // if (req.params.sortBy === "fresh") {
     //   res.json(sortedPostsByFreshDate);
     // } else res.json(sortedPostsByPopular);
-    res.json(posts)
-
+    res.json(posts);
   } catch (e) {
     console.error(e);
     res.status(500).json({
@@ -182,10 +181,7 @@ export const update = async (req, res) => {
 export const getLastTags = async (req, res) => {
   try {
     const posts = await PostModel.find().exec();
-    const tags = posts
-      .map((e) => e.tags)
-      .flat()
-      .slice(0, 5);
+    const tags = posts.map((e) => e.tags).flat();
 
     res.json(tags);
   } catch (e) {
