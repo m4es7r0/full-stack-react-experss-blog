@@ -11,19 +11,22 @@ import ListItemText from "@mui/material/ListItemText";
 import Skeleton from "@mui/material/Skeleton";
 
 import { SideBlock } from "./SideBlock";
+import { useSelector } from "react-redux";
 
 export const TagsBlock = () => {
-  const { data: items, error, isLoading, isError } = useGetTagsQuery();
+  const { data: items = [], error, isLoading, isError } = useGetTagsQuery();
+
+  const tags = useSelector(({ posts }) => posts.tags);
 
   return (
     <SideBlock title="Тэги">
-      {isError && !items && (
+      {isError && !items.length > 0 && (
         <ListItem>
           <ListItemText primary={error.error} />
         </ListItem>
       )}
       <List>
-        {(isLoading ? [...Array(5)] : items)?.map((name, i) => (
+        {(isLoading ? [...Array(5)] : tags)?.map((name, i) => (
           <Link
             style={{ textDecoration: "none", color: "black" }}
             to={`/tags/${name}`}

@@ -7,14 +7,17 @@ import { Post } from "../components/Post";
 import { TagsBlock } from "../components/TagsBlock";
 import { CommentsBlock } from "../components";
 
+import { useParams } from "react-router-dom";
+
 import { useGetPostsQuery } from "../redux/api/api";
 import { useSelector } from "react-redux";
 import useSortPost from "../hooks/sortPostBy";
 import { useMUITheme } from "../hooks/materialTheme";
 
-export const Home = () => {
+export const Home = ({ byTag }) => {
   const matches = useMUITheme("md");
 
+  const { tagName } = useParams();
   const userData = useSelector(({ auth }) => auth.user);
   const coments = useSelector(({ posts }) => posts.coments);
 
@@ -25,7 +28,13 @@ export const Home = () => {
     isError: isErrorPosts,
   } = useGetPostsQuery(undefined, { refetchOnMountOrArgChange: true });
 
-  const { sortedPosts, sortByPopular, setSortByPopular } = useSortPost(posts);
+  const { sortedPosts, sortByPopular, setSortByPopular } = useSortPost(
+    posts,
+    tagName
+  );
+
+  console.log(sortedPosts);
+
   const sertedComents = coments
     .slice()
     .sort((a, b) =>
@@ -47,8 +56,23 @@ export const Home = () => {
           {!matches ? <TagsBlock /> : null}
           {isErrorPosts && <h2>{postsError.error}</h2>}
           {isLoadingPosts
-            ? [...Array(3)].map((_, index) => (
+            ? [...Array(1)].map((_, index) => (
                 <Post key={index} isLoading={true} />
+              ))
+            : !byTag
+            ? sortedPosts?.map((p) => (
+                <Post
+                  key={p._id}
+                  id={p._id}
+                  title={p.title}
+                  imageUrl={p.imageUrl}
+                  user={p.user}
+                  createdAt={new Date(p.createdAt).toDateString()}
+                  viewsCount={p.viewsCount}
+                  comentsCount={p.comentsCount}
+                  tags={p.tags}
+                  isEditable={userData?._id === p.user._id}
+                />
               ))
             : sortedPosts?.map((p) => (
                 <Post

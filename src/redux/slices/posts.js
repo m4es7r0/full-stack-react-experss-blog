@@ -19,7 +19,8 @@ const postsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addMatcher(api.endpoints.getTags.matchFulfilled, (state, action) => {
-        state.tags = action.payload;
+        const tmp = new Set(action.payload);
+        state.tags = Array.from(tmp);
       })
       .addMatcher(api.endpoints.getComent.matchFulfilled, (state, action) => {
         state.coments = action.payload;

@@ -9,10 +9,10 @@ import { Home, FullPost, Registration, AddPost, Login } from "./pages";
 import { useLazyAuthMeQuery } from "./redux/api/api";
 
 function App() {
-  const [isAuth] = useLazyAuthMeQuery()
+  const [isAuth] = useLazyAuthMeQuery();
 
   React.useEffect(() => {
-    isAuth()
+    isAuth();
   }, []);
 
   return (
@@ -21,6 +21,7 @@ function App() {
       <Container maxWidth="lg">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/tags/:tagName" element={<Home byTag />} />
           <Route path="/posts/:postId" element={<FullPost />} />
           <Route path="/posts/:postId/edit" element={<AddPost />} />
           <Route path="/add-post" element={<AddPost />} />
