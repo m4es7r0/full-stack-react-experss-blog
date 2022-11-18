@@ -106,7 +106,9 @@ export const CommentsBlock = ({ children, items, isEditable }) => {
                     </Modal>
                     <span>
                       <IconButton
-                        onClick={() => remove(obj._id)}
+                        onClick={() => {
+                          if (window.confirm("Удалить?")) remove(obj._id);
+                        }}
                         disabled={obj.user._id !== userData?._id}
                         color="secondary"
                       >
