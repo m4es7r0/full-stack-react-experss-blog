@@ -10,8 +10,11 @@ import { CommentsBlock } from "../components";
 import { useGetPostsQuery } from "../redux/api/api";
 import { useSelector } from "react-redux";
 import useSortPost from "../hooks/sortPostBy";
+import { useMUITheme } from "../hooks/materialTheme";
 
 export const Home = () => {
+  const matches = useMUITheme("md");
+
   const userData = useSelector(({ auth }) => auth.user);
   const coments = useSelector(({ posts }) => posts.coments);
 
@@ -39,8 +42,9 @@ export const Home = () => {
         <Tab label="Новые" onClick={() => setSortByPopular(false)} />
         <Tab label="Популярные" onClick={() => setSortByPopular(true)} />
       </Tabs>
-      <Grid container={window.innerWidth >= 500} spacing={4}>
-        <Grid xs={8} item>
+      <Grid container={matches} spacing={2.5}>
+        <Grid xs={7.5} item>
+          {!matches ? <TagsBlock /> : null}
           {isErrorPosts && <h2>{postsError.error}</h2>}
           {isLoadingPosts
             ? [...Array(3)].map((_, index) => (
@@ -61,28 +65,9 @@ export const Home = () => {
                 />
               ))}
         </Grid>
-        <Grid xs={4} item>
-          <TagsBlock />
-          <CommentsBlock
-            // items={[
-            //   {
-            //     user: {
-            //       fullName: "Вася Пупкин",
-            //       avatarUrl: "https://mui.com/static/images/avatar/1.jpg",
-            //     },
-            //     text: "Это тестовый комментарий",
-            //   },
-            //   {
-            //     user: {
-            //       fullName: "Иван Иванов",
-            //       avatarUrl: "https://mui.com/static/images/avatar/2.jpg",
-            //     },
-            //     text: "When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top",
-            //   },
-            // ]}
-            // error={{isError: isErrorComents, error: comentsError}}
-            items={sertedComents.slice(0, 5)}
-          />
+        <Grid xs={4.5} item>
+          {matches ? <TagsBlock /> : null}
+          <CommentsBlock items={sertedComents.slice(0, 5)} />
         </Grid>
       </Grid>
     </>

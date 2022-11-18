@@ -18,7 +18,6 @@ export const FullPost = () => {
   const { data, isLoading, isError, error } = useGetPostByIdQuery(postId);
 
   const isHasComent = coments.filter((obj) => obj.postId === postId);
-  const isAccessComentsForEdit = isHasComent.filter(c => c?.user._id === userData?._id)
 
   return (
     <>

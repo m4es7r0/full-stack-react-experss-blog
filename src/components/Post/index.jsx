@@ -12,7 +12,6 @@ import CommentIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import styles from "./Post.module.scss";
 import { UserInfo } from "../UserInfo";
 import { PostSkeleton } from "./Skeleton";
-import { WindowSharp } from "@mui/icons-material";
 
 export const Post = ({
   id,
@@ -28,7 +27,7 @@ export const Post = ({
   isLoading,
   isEditable,
 }) => {
-  const [removePost, {isLoading: isDeleting}] = useRemovePostMutation();
+  const [removePost, { isLoading: isDeleting }] = useRemovePostMutation();
 
   if (isLoading) {
     return <PostSkeleton />;
@@ -43,11 +42,15 @@ export const Post = ({
               <EditIcon />
             </IconButton>
           </Link>
-          <IconButton disabled={isDeleting} onClick={() => {
-            if (window.confirm("Точно удалить?")) {
-              removePost(id)
-            }
-          }} color="secondary">
+          <IconButton
+            disabled={isDeleting}
+            onClick={() => {
+              if (window.confirm("Точно удалить?")) {
+                removePost(id);
+              }
+            }}
+            color="secondary"
+          >
             <DeleteIcon />
           </IconButton>
         </div>
