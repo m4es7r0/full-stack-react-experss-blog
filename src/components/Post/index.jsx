@@ -56,6 +56,10 @@ export const Post = ({
         <img
           className={clsx(styles.image, { [styles.imageFull]: isFullPost })}
           src={imageUrl}
+          onError={(e) => {
+            e.target.src =
+              "https://shots.codepen.io/akashrajendra/pen/JKKRvQ-1280.jpg?version=1468859775";
+          }}
           alt={title}
         />
       )}
