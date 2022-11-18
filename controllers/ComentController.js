@@ -7,9 +7,10 @@ export const getAll = async (req, res) => {
 
     const coments = _coments.map(({ _doc }) => {
       const { user, ...data } = _doc;
-      const { passwordHash, createdAt, updatedAt, __v, ...userData } = user._doc;
+      const { passwordHash, createdAt, updatedAt, __v, ...userData } =
+        user._doc;
 
-      if (!user) return res.status(500).json({message: "db error"})
+      if (!user) return res.status(500).json({ message: "db error" });
       return { ...data, user: userData };
     });
 
@@ -65,7 +66,7 @@ export const create = async (req, res) => {
             message: "post not found",
           });
         }
-        res.json({success: true})
+        res.json({ success: true });
       }
     ).populate("user");
   } catch (e) {
@@ -92,6 +93,7 @@ export const remove = async (req, res) => {
           {
             $inc: {
               comentsCount: -1,
+              viewsCount: -1,
             },
           },
           {

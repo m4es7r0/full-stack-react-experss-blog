@@ -53,7 +53,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 //clean folder when folder-size more then 99Mb
-watchTheFolder("uploads", 99);
+// watchTheFolder("uploads", 99);
 
 app.post(
   "/auth/login",
@@ -75,13 +75,23 @@ app.post("/upload", checkAuth, upload.single("image"), (req, res) => {
   });
 });
 app.post("/upload-remove", checkAuth, (req, res) => {
-  fs.unlink("uploads" + req.body.name, (err) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-    // file removed
-  });
+  try {
+    fs.unlink("uploads" + req.body.name, (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      // file removed
+    });
+    res.json({
+      success: true,
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(400).json({
+      success: false,
+    });
+  }
 });
 
 app.get("/posts/", PostController.getAll);
