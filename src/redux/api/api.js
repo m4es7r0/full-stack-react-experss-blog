@@ -22,7 +22,7 @@ const api = createApi({
       query: (id) => ({
         url: `posts/${id}`,
       }),
-      providesTags: ["Post"],
+      providesTags: ["Post", "Coments"],
     }),
     makePost: build.mutation({
       query: (body) => ({
