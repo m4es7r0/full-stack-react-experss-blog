@@ -149,11 +149,34 @@ export const update = async (req, res) => {
       },
       {
         text: req.body.text,
-        $inc: {
-          viewsCount: -1,
-        },
       },
       (err, doc) => {
+        PostModel.findOneAndUpdate(
+          {
+            _id: doc.postId,
+          },
+          {
+            $inc: {
+              viewsCount: -1,
+            },
+          },
+          {
+            returnDocument: "after",
+          },
+          (err, doc) => {
+            if (err) {
+              console.error(err);
+              return res.status(500).json({
+                message: "could not fetch",
+              });
+            }
+            if (!doc) {
+              return res.status(404).json({
+                message: "source not found",
+              });
+            }
+          }
+        );
         if (err) {
           console.error(err);
           return res.status(500).json({
