@@ -149,6 +149,9 @@ export const update = async (req, res) => {
       },
       {
         text: req.body.text,
+        $inc: {
+          viewsCount: -1,
+        },
       },
       (err, doc) => {
         if (err) {
