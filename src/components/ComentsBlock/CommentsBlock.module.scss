@@ -1,4 +1,7 @@
 .btn {
+  display: flex;
+  position: absolute;
+  right: 16px;
   visibility: hidden;
   button[disabled] {
     color: transparent;
@@ -6,6 +9,9 @@
 }
 
 .comment {
+  max-height: 140px;
+  overflow: hidden;
+
   &:hover {
     button {
       visibility: visible !important;

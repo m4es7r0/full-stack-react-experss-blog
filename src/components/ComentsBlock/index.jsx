@@ -99,22 +99,20 @@ export const CommentsBlock = ({ children, items, isEditable }) => {
                           onClick={() => setText(obj.text)}
                           disabled={obj.user._id !== userData?._id}
                           color="primary"
-                        >
-                          <EditIcon />
-                        </IconButton>
+                          size="small"
+                          children={<EditIcon />}
+                        ></IconButton>
                       </span>
                     </Modal>
-                    <span>
-                      <IconButton
-                        onClick={() => {
-                          if (window.confirm("Удалить?")) remove(obj._id);
-                        }}
-                        disabled={obj.user._id !== userData?._id}
-                        color="secondary"
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </span>
+                    <IconButton
+                      onClick={() => {
+                        if (window.confirm("Удалить?")) remove(obj._id);
+                      }}
+                      disabled={obj.user._id !== userData?._id}
+                      color="secondary"
+                      size="small"
+                      children={<DeleteIcon />}
+                    />
                   </div>
                 </>
               )}
