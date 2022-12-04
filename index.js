@@ -24,9 +24,7 @@ dotenv.config();
 const port = process.env.PORT || 8000;
 
 mongoose
-  .connect(
-    "mongodb+srv://m4es7r0:nezuka@cluster0.cik3kcc.mongodb.net/blog?retryWrites=true&w=majority"
-  )
+  .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("DB OK");
   })
