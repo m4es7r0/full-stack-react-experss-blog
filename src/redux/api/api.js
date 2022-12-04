@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://mern-blog-preview.herokuapp.com/",
+    baseUrl: process.env.MAIN_URL,
     prepareHeaders: (headers) => {
       const token = window.localStorage.getItem("token");
       if (token) headers.set("Authorization", token);

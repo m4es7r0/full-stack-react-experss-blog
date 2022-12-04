@@ -66,7 +66,7 @@ export const AddPost = () => {
           text: fields.value,
           tags: !fields.tags ? [] : fields.tags.trim().split(", "),
           imageUrl: fields.image
-            ? `https://mern-blog-preview.herokuapp.com/${fields.image}`
+            ? `${process.env.MAIN_URL}${fields.image}`
             : fields.imageByUrl,
         },
       })
@@ -78,7 +78,7 @@ export const AddPost = () => {
         text: fields.value,
         tags: !fields.tags ? [] : fields.tags.trim().split(", "),
         imageUrl: fields.image
-          ? `https://mern-blog-preview.herokuapp.com/${fields.image}`
+          ? `${process.env.MAIN_URL}${fields.image}`
           : fields.imageByUrl,
       })
         .unwrap()
@@ -145,7 +145,7 @@ export const AddPost = () => {
             className={styles.image}
             src={
               fields.image
-                ? `https://mern-blog-preview.herokuapp.com/${fields.image}`
+                ? `${process.env.MAIN_URL}${fields.image}`
                 : fields.imageByUrl
             }
             alt="wrong url"
