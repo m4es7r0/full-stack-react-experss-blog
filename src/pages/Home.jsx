@@ -1,18 +1,18 @@
-import React from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import Grid from "@mui/material/Grid";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import React from "react";
 
+import { CommentsBlock } from "../components";
 import { Post } from "../components/Post";
 import { TagsBlock } from "../components/TagsBlock";
-import { CommentsBlock } from "../components";
 
 import { useParams } from "react-router-dom";
 
-import { useGetPostsQuery } from "../redux/api/api";
 import { useSelector } from "react-redux";
-import useSortPost from "../hooks/sortPostBy";
 import { useMUITheme } from "../hooks/materialTheme";
+import useSortPost from "../hooks/sortPostBy";
+import { useGetPostsQuery } from "../redux/api/api";
 
 export const Home = () => {
   const matches = useMUITheme("md");
@@ -46,8 +46,8 @@ export const Home = () => {
         value={sortByPopular ? 1 : 0}
         aria-label="basic tabs example"
       >
-        <Tab label="Новые" onClick={() => setSortByPopular(false)} />
-        <Tab label="Популярные" onClick={() => setSortByPopular(true)} />
+        <Tab label="New" onClick={() => setSortByPopular(false)} />
+        <Tab label="Popular" onClick={() => setSortByPopular(true)} />
       </Tabs>
       <Grid container={matches} spacing={2.5}>
         <Grid xs={7.5} item>

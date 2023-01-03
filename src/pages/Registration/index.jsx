@@ -2,14 +2,14 @@ import React from "react";
 
 import { useLazyAuthMeQuery, useRegisterMutation } from "../../redux/api/api";
 
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import Modal from "../../components/Modal";
 
 import styles from "./Login.module.scss";
@@ -69,11 +69,11 @@ export const Registration = () => {
   return (
     <Paper classes={{ root: styles.root }}>
       <Typography classes={{ root: styles.title }} variant="h5">
-        Создание аккаунта
+        Register
       </Typography>
       <div className={styles.avatar}>
         <Modal
-          title="URL изображения"
+          title="Image URL"
           component={
             <TextField
               label="image url"
@@ -90,7 +90,7 @@ export const Registration = () => {
         <TextField
           className={styles.field}
           {...register("fullName", { required: "this is required field" })}
-          label="Полное имя"
+          label="Full name"
           type="text"
           error={errors?.fullName || error?.data}
           helperText={
@@ -117,7 +117,7 @@ export const Registration = () => {
           className={styles.field}
           {...register("password", { required: "this is required field" })}
           type="password"
-          label="Пароль"
+          label="Password"
           error={errors?.password || error?.status === 400}
           helperText={
             error?.status === 400
@@ -133,7 +133,7 @@ export const Registration = () => {
           variant="contained"
           fullWidth
         >
-          Зарегистрироваться
+          Sign up
         </Button>
       </form>
     </Paper>

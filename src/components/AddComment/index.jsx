@@ -4,9 +4,9 @@ import { useMakeComentMutation } from "../../redux/api/api";
 
 import styles from "./AddComment.module.scss";
 
-import TextField from "@mui/material/TextField";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 export const Index = ({ postId }) => {
   const isAuth = window.localStorage.getItem("token");
@@ -39,7 +39,7 @@ export const Index = ({ postId }) => {
         />
         <div className={styles.form}>
           <TextField
-            label="Написать комментарий"
+            label="Write a comment"
             value={text}
             onChange={(e) => {
               setText(e.target.value)
@@ -47,13 +47,13 @@ export const Index = ({ postId }) => {
             }}
             variant="outlined"
             maxRows={10}
-            helperText={helperText ? "минимальная длина комментария 5 символов" : "" }
+            helperText={helperText ? "minimum comment length 5 characters" : "" }
             error={helperText}
             multiline
             fullWidth
           />
           <Button variant="contained" onClick={onMakeComent} disabled={!isAuth}>
-            {isAuth ? "Отправить" : "Для отправки нужна авторизация"}
+            {isAuth ? "Send" : "Authorization required to send"}
           </Button>
         </div>
       </div>

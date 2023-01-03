@@ -2,16 +2,16 @@ import React from "react";
 
 import { Navigate } from "react-router-dom";
 
-import { selectIsAuth } from "../../redux/slices/auth";
 import { useSelector } from "react-redux";
 import { useLoginUserMutation } from "../../redux/api/api";
+import { selectIsAuth } from "../../redux/slices/auth";
 
 import { useForm } from "react-hook-form";
 
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 
 import styles from "./Login.module.scss";
 
@@ -51,17 +51,12 @@ export const Login = () => {
   if (isAuth)
     return (
       <Navigate to="/" />
-      // <Paper classes={{ root: styles.root }}>
-      //   <Typography classes={{ root: styles.title }} variant="h5">
-      //     Alredy Logged
-      //   </Typography>
-      // </Paper>
     );
 
   return (
     <Paper classes={{ root: styles.root }}>
       <Typography classes={{ root: styles.title }} variant="h5">
-        Вход в аккаунт
+        Login
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextField
@@ -76,7 +71,7 @@ export const Login = () => {
         <TextField
           className={styles.field}
           {...register("password", { required: "this is required field" })}
-          label="Пароль"
+          label="Password"
           type={"password"}
           error={errors?.password || error?.status === 400}
           helperText={
@@ -87,7 +82,7 @@ export const Login = () => {
           fullWidth
         />
         <Button type="submit" disabled={!isValid} size="large" variant="contained" fullWidth>
-          Войти
+          Sign in
         </Button>
       </form>
     </Paper>

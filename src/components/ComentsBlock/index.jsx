@@ -1,27 +1,27 @@
 import React from "react";
 
+import { useSelector } from "react-redux";
 import {
   useGetComentQuery,
   useRemoveComentMutation,
-  useUpdateComentMutation,
+  useUpdateComentMutation
 } from "../../redux/api/api";
-import { useSelector } from "react-redux";
 
 import Modal from "../../components/Modal";
 
-import { SideBlock } from "../SideBlock";
-import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Clear";
 import EditIcon from "@mui/icons-material/Edit";
-import TextField from "@mui/material/TextField";
+import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
-import List from "@mui/material/List";
 import Skeleton from "@mui/material/Skeleton";
+import TextField from "@mui/material/TextField";
+import { SideBlock } from "../SideBlock";
 
 import styles from "./CommentsBlock.module.scss";
 
@@ -35,7 +35,7 @@ export const CommentsBlock = ({ children, items, isEditable }) => {
   const [text, setText] = React.useState("");
 
   return (
-    <SideBlock title="Комментарии">
+    <SideBlock title="Comments">
       {isError && !data && (
         <ListItem>
           <ListItemText primary={error.error} />
@@ -65,11 +65,11 @@ export const CommentsBlock = ({ children, items, isEditable }) => {
                   />
                   <div className={styles.btn}>
                     <Modal
-                      title="Редактирование Комментария"
+                      title="Editing a Comment"
                       component={
                         <>
                           <TextField
-                            label="твой комментарий"
+                            label="your comment"
                             multiline
                             fullWidth
                             type="text"
@@ -89,7 +89,7 @@ export const CommentsBlock = ({ children, items, isEditable }) => {
                               });
                             }}
                           >
-                            {"Cохранить"}
+                            {"Save"}
                           </Button>
                         </>
                       }
@@ -106,7 +106,7 @@ export const CommentsBlock = ({ children, items, isEditable }) => {
                     </Modal>
                     <IconButton
                       onClick={() => {
-                        if (window.confirm("Удалить?")) remove(obj._id);
+                        if (window.confirm("Remove?")) remove(obj._id);
                       }}
                       disabled={obj.user._id !== userData?._id}
                       color="secondary"

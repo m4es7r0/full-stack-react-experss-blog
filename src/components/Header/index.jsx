@@ -1,8 +1,8 @@
 import React from "react";
 
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { selectIsAuth, logout } from "../../redux/slices/auth";
+import { logout, selectIsAuth } from "../../redux/slices/auth";
 
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -30,23 +30,23 @@ export const Header = () => {
             {isAuth ? (
               <>
                 <Link to="/add-post">
-                  <Button variant="contained">Написать статью</Button>
+                  <Button variant="contained">New post</Button>
                 </Link>
                 <Button
                   onClick={onClickLogout}
                   variant="contained"
                   color="error"
                 >
-                  Выйти
+                  Sign out
                 </Button>
               </>
             ) : (
               <>
                 <Link to="/login">
-                  <Button variant="outlined">Войти</Button>
+                  <Button variant="outlined">Sign in</Button>
                 </Link>
                 <Link to="/register">
-                  <Button variant="contained">Создать аккаунт</Button>
+                  <Button variant="contained">Sign up</Button>
                 </Link>
               </>
             )}

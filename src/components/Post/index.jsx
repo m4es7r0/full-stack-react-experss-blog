@@ -2,15 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useRemovePostMutation } from "../../redux/api/api";
 
-import clsx from "clsx";
-import IconButton from "@mui/material/IconButton";
+import CommentIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import DeleteIcon from "@mui/icons-material/Clear";
 import EditIcon from "@mui/icons-material/Edit";
 import EyeIcon from "@mui/icons-material/RemoveRedEyeOutlined";
-import CommentIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
+import IconButton from "@mui/material/IconButton";
+import clsx from "clsx";
 
-import styles from "./Post.module.scss";
 import { UserInfo } from "../UserInfo";
+import styles from "./Post.module.scss";
 import { PostSkeleton } from "./Skeleton";
 
 export const Post = ({
@@ -45,7 +45,7 @@ export const Post = ({
           <IconButton
             disabled={isDeleting}
             onClick={() => {
-              if (window.confirm("Точно удалить?")) {
+              if (window.confirm("Exactly remove?")) {
                 removePost(id);
               }
             }}

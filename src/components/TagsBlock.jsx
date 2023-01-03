@@ -1,17 +1,17 @@
 import React from "react";
-import { useGetTagsQuery } from "../redux/api/api";
 import { Link } from "react-router-dom";
+import { useGetTagsQuery } from "../redux/api/api";
 
+import TagIcon from "@mui/icons-material/Tag";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import TagIcon from "@mui/icons-material/Tag";
 import ListItemText from "@mui/material/ListItemText";
 import Skeleton from "@mui/material/Skeleton";
 
-import { SideBlock } from "./SideBlock";
 import { useSelector } from "react-redux";
+import { SideBlock } from "./SideBlock";
 
 export const TagsBlock = () => {
   const { data: items = [], error, isLoading, isError } = useGetTagsQuery();
@@ -19,7 +19,7 @@ export const TagsBlock = () => {
   const tags = useSelector(({ posts }) => posts.tags);
 
   return (
-    <SideBlock title="Тэги">
+    <SideBlock title="Tags">
       {isError && !items.length > 0 && (
         <ListItem>
           <ListItemText primary={error.error} />

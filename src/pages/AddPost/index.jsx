@@ -3,18 +3,17 @@ import React from "react";
 import { useAuthRedirect } from "../../hooks/authFaildRedirect";
 import useGetSelectedPosts from "../../hooks/getSelectedPosts";
 
-import { useNavigate, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
-  useUploadFileMutation,
   useMakePostMutation,
   useRemoveFileMutation,
-  useUpdatePostMutation,
+  useUpdatePostMutation, useUploadFileMutation
 } from "../../redux/api/api";
 
-import TextField from "@mui/material/TextField";
-import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
 import SimpleMDE from "react-simplemde-editor";
 
 import "easymde/dist/easymde.min.css";
@@ -91,7 +90,7 @@ export const AddPost = () => {
       spellChecker: false,
       maxHeight: "auto",
       autofocus: true,
-      placeholder: "Введите текст...",
+      placeholder: "Enter text...",
       status: false,
       autosave: {
         enabled: true,
@@ -113,7 +112,7 @@ export const AddPost = () => {
             variant="outlined"
             size="large"
           >
-            Загрузить превью
+            Upload preview
           </Button>
           <input
             ref={inputImageRef}
@@ -122,7 +121,7 @@ export const AddPost = () => {
             hidden
           />
           <TextField
-            placeholder="или url картинки"
+            placeholder="image url"
             value={fields.imageByUrl}
             onChange={(e) => {
               setFields((prev) => ({ ...prev, imageByUrl: e.target.value }));
@@ -136,7 +135,7 @@ export const AddPost = () => {
               size="large"
               onClick={onClickRemoveImage}
             >
-              Удалить
+              Remove
             </Button>
           )}
         </div>
@@ -159,7 +158,7 @@ export const AddPost = () => {
           setFields((prev) => ({ ...prev, title: e.target.value }))
         }
         variant="standard"
-        placeholder="Заголовок статьи..."
+        placeholder="Article title..."
         fullWidth
       />
       <TextField
@@ -169,7 +168,7 @@ export const AddPost = () => {
           setFields((prev) => ({ ...prev, tags: e.target.value }))
         }
         variant="standard"
-        placeholder="Тэги"
+        placeholder="Tags"
         fullWidth
       />
       <SimpleMDE
@@ -180,11 +179,11 @@ export const AddPost = () => {
       />
       <div className={styles.buttons}>
         <Button onClick={onSubmit} size="large" variant="contained">
-          {postId ? "Сохранить" : "Опубликовать"}
+          {postId ? "Save" : "Publish"}
         </Button>
         <Link to="/">
           <Button size="large" color="error" variant="contained">
-            Отмена
+            Cancel
           </Button>
         </Link>
       </div>
